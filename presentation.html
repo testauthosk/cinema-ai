@@ -522,14 +522,15 @@ tailwind.config={theme:{extend:{
     <div class="eyebrow anim-up">Главное · трансформация</div>
     <h2 class="text-[42px] mt-3 anim-up">Раньше сводили сами. Теперь считает <span class="text-acd">машина</span>.</h2>
     <div class="flex items-center gap-3 mt-6 anim-up">
-      <div class="ba-toggle now" id="baToggle">
-        <span class="ba-opt" data-s="was">Было</span>
-        <span class="ba-opt on" data-s="now">Стало</span>
+      <div class="ba-toggle" id="baToggle">
+        <span class="ba-opt on" data-s="was">Было</span>
+        <span class="ba-opt" data-s="now">Стало</span>
         <span class="ba-knob"></span>
       </div>
-      <span class="text-[12.5px] text-t3 mono">нажмите, чтобы сравнить ↔</span>
+      <span class="text-[12.5px] text-t3 mono">«Далее» → стало · «Назад» → было</span>
+      <span class="fragment ba-frag" aria-hidden="true" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none"></span>
     </div>
-    <div id="baRows" class="state-now grid grid-cols-2 gap-x-9 gap-y-4 mt-8 max-w-[1040px]">
+    <div id="baRows" class="state-was grid grid-cols-2 gap-x-9 gap-y-4 mt-8 max-w-[1040px]">
       <div class="ba-cell">
         <div class="flex items-center gap-2.5 text-t2"><span class="w-8 h-8 rounded-[9px] bg-elev grid place-items-center text-acd"><i class="ph-bold ph-files text-[17px]"></i></span><span class="lbl">Сбор данных</span></div>
         <div class="text-[16px] mt-2.5 leading-snug"><span class="ba-was">вручную из 4 систем, выгрузки в Excel</span><span class="ba-now"><i class="ph-bold ph-check text-acd text-[14px] mr-1 align-middle"></i>автоматически, в реальном времени</span></div>
@@ -720,7 +721,7 @@ tailwind.config={theme:{extend:{
       gsap.from(s.querySelectorAll('.mpin-inner'),{scale:0,opacity:0,transformOrigin:'50% 50%',duration:.45,stagger:.05,delay:.3,ease:'back.out(1.8)'});
       gsap.from(s.querySelectorAll('.mlabel,.mlabel-hub,.mval-pos,.mval-neg'),{opacity:0,duration:.5,stagger:.03,delay:.9}); },
     value(s){ headsUp(s); },
-    shift(s){ headsUp(s); setBA('was',false); gsap.delayedCall(.9,()=>setBA('now',true)); },
+    shift(s){ headsUp(s); const f=s.querySelector('.ba-frag'); setBA(f&&f.classList.contains('visible')?'now':'was',false); },
     finale(s){ const tl=gsap.timeline();
       tl.from(s.querySelector('.fl-eye'),{opacity:0,y:10,duration:.45,ease:'power2.out'})
         .from(s.querySelectorAll('.fl-line'),{yPercent:118,duration:.7,stagger:.1,ease:'power3.out'},'-=.1')
@@ -734,6 +735,8 @@ tailwind.config={theme:{extend:{
 
   Reveal.on('ready',e=>{ updateBar(e.indexh); runAnim(e.currentSlide); });
   Reveal.on('slidechanged',e=>{ updateBar(e.indexh); runAnim(e.currentSlide); });
+  Reveal.on('fragmentshown',e=>{ if(e.fragment&&e.fragment.classList.contains('ba-frag')) setBA('now',true); });
+  Reveal.on('fragmenthidden',e=>{ if(e.fragment&&e.fragment.classList.contains('ba-frag')) setBA('was',true); });
 })();
 </script>
 </body>
