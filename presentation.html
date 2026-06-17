@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>МОНИТОР · AI-командный центр сети — презентация</title>
+
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- reveal.js core (no theme — мы пишем свою) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<!-- GSAP free core -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{
+ colors:{bg:'#F6FAFB',surf:'#FFFFFF',elev:'#EEF4F5',line:'#DCE6E9',ink:'#0E1A1E',t2:'#52656C',t3:'#8498A0',
+  ac:'#16C0D4',acd:'#0B7C8B',act:'#E4F5F7',pos:'#16A34A',neg:'#DC2626',warn:'#D97706',dk:'#0E1A1E'},
+ fontFamily:{sans:['"IBM Plex Sans"','system-ui','sans-serif'],mono:['"IBM Plex Mono"','ui-monospace','monospace']},
+ borderRadius:{card:'14px',btn:'10px'}}}}
+</script>
+
+<style>
+ :root{ --ac:#16C0D4; --acd:#0B7C8B; }
+ html,body{margin:0;height:100%;background:#F6FAFB;color:#0E1A1E;font-family:'IBM Plex Sans',sans-serif;-webkit-font-smoothing:antialiased}
+ .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"zero" 1}
+ .mono{font-family:'IBM Plex Mono',monospace}
+ .eyebrow{font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.16em;font-size:12px;font-weight:600;color:var(--acd)}
+ .lbl{text-transform:uppercase;letter-spacing:.08em;font-size:11px;font-weight:600}
+
+ /* фоновые слои */
+ .bg-dot{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(circle,#D2E2E6 1px,transparent 1px);background-size:30px 30px;opacity:.6}
+ .bg-glow{position:fixed;top:-260px;right:-200px;width:760px;height:760px;z-index:0;pointer-events:none;border-radius:50%;background:radial-gradient(circle,rgba(22,192,212,.16),transparent 62%);filter:blur(8px)}
+ .grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.03;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+ /* reveal overrides */
+ .reveal{font-family:'IBM Plex Sans',sans-serif;color:#0E1A1E}
+ .reveal .slides{text-align:left}
+ .reveal .slides section{width:1280px;padding:48px 76px;box-sizing:border-box;overflow:hidden}
+ .reveal h1,.reveal h2,.reveal h3{font-family:'IBM Plex Sans',sans-serif;text-transform:none;letter-spacing:-.02em;margin:0;line-height:1.08;font-weight:700;color:#0E1A1E}
+ .reveal p{margin:0;line-height:1.5}
+ .reveal .controls,.reveal .progress{display:none}
+ .reveal .slide-number{display:none}
+
+ .logo{position:relative;width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#16C0D4,#0E97A8);display:grid;place-items:center;box-shadow:0 8px 22px -10px rgba(14,151,168,.7)}
+ .card-sh{box-shadow:0 1px 2px rgba(14,26,30,.04),0 12px 34px -16px rgba(14,26,30,.14)}
+ .glowline{background:linear-gradient(90deg,transparent,#16C0D4,transparent);height:2px;transform-origin:center}
+ .chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;background:#fff;border:1px solid #DCE6E9;border-radius:999px;padding:7px 14px}
+ .src{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:#0E1A1E}
+ .mask{display:block;overflow:hidden;padding-bottom:.06em}
+ .mask>span{display:block}
+
+ /* nav bar */
+ .navbar{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:14px;
+   background:rgba(255,255,255,.82);backdrop-filter:blur(14px);border:1px solid #DCE6E9;border-radius:999px;padding:8px 8px 8px 18px;
+   box-shadow:0 10px 40px -16px rgba(14,26,30,.3)}
+ .nmeta{font-size:12px;font-weight:600;color:#52656C;white-space:nowrap}
+ .nmeta b{color:#0E1A1E}
+ .nmeta .mono{color:#0B7C8B}
+ .dots{display:flex;gap:6px;align-items:center}
+ .dot{width:7px;height:7px;border-radius:50%;background:#CBD9DD;cursor:pointer;transition:all .25s ease}
+ .dot.on{background:#16C0D4;width:22px;border-radius:99px}
+ .nbtn{width:38px;height:38px;border-radius:50%;border:1px solid #CBD9DD;background:#fff;color:#0E1A1E;display:grid;place-items:center;cursor:pointer;transition:all .15s ease;font-size:15px}
+ .nbtn:hover{border-color:#16C0D4;color:#0B7C8B}
+ .nbtn:disabled{opacity:.35;cursor:default}
+ .nbtn.primary{width:auto;border-radius:999px;padding:0 18px;height:38px;background:#16C0D4;color:#06181B;border:none;font-weight:600;font-size:13.5px;gap:7px;box-shadow:0 8px 20px -8px rgba(22,192,212,.7)}
+ .nbtn.primary:hover{background:#0FB0C4;color:#06181B}
+ .kbd-hint{position:fixed;left:24px;bottom:28px;z-index:50;font-size:11px;color:#8498A0;font-family:'IBM Plex Mono',monospace}
+ .kbd-hint b{display:inline-block;border:1px solid #CBD9DD;border-bottom-width:2px;border-radius:5px;padding:1px 6px;color:#52656C;background:#fff;margin:0 1px}
+
+ /* diagram */
+ .node{position:absolute;background:#fff;border:1px solid #DCE6E9;border-radius:13px;box-shadow:0 1px 2px rgba(14,26,30,.04),0 12px 30px -18px rgba(14,26,30,.16)}
+ .draw{fill:none;stroke:#16C0D4;stroke-width:2;stroke-linecap:round}
+
+ .btnac{display:inline-flex;align-items:center;gap:8px;background:#16C0D4;color:#06181B;font-weight:600;border-radius:10px;padding:13px 22px;font-size:15px;transition:all .15s ease;text-decoration:none}
+ .btnac:hover{background:#0FB0C4;transform:translateY(-1px)}
+ .btngh{display:inline-flex;align-items:center;gap:8px;border:1px solid #CBD9DD;color:#0E1A1E;font-weight:600;border-radius:10px;padding:13px 22px;font-size:15px;transition:all .15s ease;text-decoration:none}
+ .btngh:hover{border-color:#16C0D4;background:#F0F8F9}
+ ::selection{background:#16C0D4;color:#06181B}
+ .reveal .fragment.fade-up{transform:translateY(16px)}
+ .reveal .fragment.fade-up.visible{transform:none}
+</style>
+</head>
+<body>
+<div class="bg-dot"></div>
+<div class="bg-glow"></div>
+
+<div class="reveal">
+ <div class="slides">
+
+  <!-- 01 · COVER -->
+  <section data-anim="cover" class="flexc">
+    <div class="flex items-center gap-3 cv-logo">
+      <span class="logo"><i class="ph-fill ph-play text-white text-[19px] ml-0.5"></i></span>
+      <span class="text-[19px] font-bold tracking-tight">МОНИТОР</span>
+      <span class="eyebrow">AI</span>
+    </div>
+    <div class="eyebrow mt-12 cv-eye">Командное предложение · сеть кинотеатров «Монитор»</div>
+    <h1 class="text-[68px] font-bold mt-5 tracking-[-0.03em]">
+      <span class="mask"><span class="cv-line">Вся ваша сеть кинотеатров —</span></span>
+      <span class="mask"><span class="cv-line">в одном <span style="color:#0B7C8B">центре управления</span>.</span></span>
+    </h1>
+    <p class="text-[19px] text-t2 mt-7 max-w-[760px] cv-sub">AI-командный центр, который собирает данные со всех 19 кинотеатров,
+       анализирует их в реальном времени и выдаёт готовые управленческие решения — а не сырые отчёты.</p>
+    <div class="glowline w-[120px] mt-9 cv-glow"></div>
+    <div class="flex items-center gap-7 mt-9 cv-trust text-t3">
+      <div><div class="text-[26px] font-bold num text-ink">19</div><div class="lbl mt-0.5">кинотеатров</div></div>
+      <div class="w-px h-10 bg-line"></div>
+      <div><div class="text-[26px] font-bold num text-ink">5</div><div class="lbl mt-0.5">AI-агентов</div></div>
+      <div class="w-px h-10 bg-line"></div>
+      <div><div class="text-[26px] font-bold num text-ink">08:00</div><div class="lbl mt-0.5">дайджест в Telegram</div></div>
+    </div>
+  </section>
+
+  <!-- 02 · SCALE -->
+  <section data-anim="scale" class="flexc">
+    <div class="eyebrow anim-up">Сеть «Монитор» сегодня</div>
+    <h2 class="text-[44px] mt-4 anim-up">Большая сеть. Четыре системы. Ноль единой картины.</h2>
+    <div class="grid grid-cols-3 gap-5 mt-12">
+      <div class="bg-surf border border-line rounded-card p-7 card-sh anim-up">
+        <div class="text-[58px] font-bold num leading-none" data-count="19">19</div>
+        <div class="text-[15px] text-t2 mt-2 font-medium">кинотеатров на Юге России</div>
+        <div class="mono text-[11.5px] text-t3 mt-1">Краснодар · Сочи · Ростов · Анапа …</div>
+      </div>
+      <div class="bg-surf border border-line rounded-card p-7 card-sh anim-up">
+        <div class="text-[58px] font-bold num leading-none"><span data-count="86">86</span></div>
+        <div class="text-[15px] text-t2 mt-2 font-medium">кинозалов под управлением</div>
+        <div class="mono text-[11.5px] text-t3 mt-1">тысячи сеансов каждую неделю</div>
+      </div>
+      <div class="bg-surf border border-line rounded-card p-7 card-sh anim-up">
+        <div class="text-[58px] font-bold num leading-none" data-count="4">4</div>
+        <div class="text-[15px] text-t2 mt-2 font-medium">источника данных в каждой точке</div>
+        <div class="flex flex-wrap gap-x-4 gap-y-1 mt-2">
+          <span class="src"><i class="ph-duotone ph-cash-register text-acd text-[17px]"></i> Касса</span>
+          <span class="src"><i class="ph-duotone ph-users-three text-acd text-[17px]"></i> CRM</span>
+          <span class="src"><i class="ph-duotone ph-coffee text-acd text-[17px]"></i> Бар</span>
+          <span class="src"><i class="ph-duotone ph-package text-acd text-[17px]"></i> Склад</span>
+        </div>
+      </div>
+    </div>
+    <p class="text-[16px] text-t2 mt-9 max-w-[820px] anim-up">Каждая система считает по-своему. Чтобы понять,
+       что происходит в сети <i>сегодня</i>, нужно ждать выгрузки и сводить таблицы вручную. Мы это меняем.</p>
+  </section>
+
+  <!-- 03 · PROBLEM -->
+  <section data-anim="problem" class="flexc">
+    <div class="eyebrow anim-up">Проблема</div>
+    <h2 class="text-[44px] mt-4 max-w-[940px] anim-up">Данные живут в четырёх системах. Решения принимаются вслепую.</h2>
+    <p class="text-[16px] text-t2 mt-5 max-w-[820px] anim-up">Пока вы сводите цифры из 4 систем по 19 точкам — смена уже прошла, а решение опоздало.</p>
+    <div class="grid grid-cols-4 gap-4 mt-11">
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-6 card-sh">
+        <i class="ph-duotone ph-files text-warn text-[26px]"></i>
+        <div class="text-[16px] font-semibold mt-3">Разрозненные данные</div>
+        <div class="text-[13px] text-t2 mt-1.5 leading-snug">4 системы × 19 точек = ручное сведение в Excel</div>
+      </div>
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-6 card-sh">
+        <i class="ph-duotone ph-clock-countdown text-warn text-[26px]"></i>
+        <div class="text-[16px] font-semibold mt-3">Решения с задержкой</div>
+        <div class="text-[13px] text-t2 mt-1.5 leading-snug">отчёт приходит, когда смену уже не вернуть</div>
+      </div>
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-6 card-sh">
+        <i class="ph-duotone ph-eye-slash text-warn text-[26px]"></i>
+        <div class="text-[16px] font-semibold mt-3">Нет единой картины</div>
+        <div class="text-[13px] text-t2 mt-1.5 leading-snug">кто лидер, а кто проседает — неочевидно</div>
+      </div>
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-6 card-sh">
+        <i class="ph-duotone ph-chart-line-down text-warn text-[26px]"></i>
+        <div class="text-[16px] font-semibold mt-3">Упущенная выручка</div>
+        <div class="text-[13px] text-t2 mt-1.5 leading-snug">сетки сеансов и бар работают не на максимум</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · IDEA / diagram -->
+  <section data-anim="idea" class="flexc">
+    <div class="eyebrow anim-up">Решение</div>
+    <h2 class="text-[44px] mt-4 anim-up">Что, если у всей сети будет <span style="color:#0B7C8B">один мозг</span>?</h2>
+    <div class="relative mx-auto mt-7" style="width:1100px;height:420px">
+      <svg class="absolute inset-0" width="1100" height="420" viewBox="0 0 1100 420" style="overflow:visible">
+        <path class="draw cn" d="M190,44  C 320,44  330,170 455,170"></path>
+        <path class="draw cn" d="M190,144 C 320,144 340,196 455,196"></path>
+        <path class="draw cn" d="M190,244 C 320,244 340,224 455,224"></path>
+        <path class="draw cn" d="M190,344 C 320,344 330,250 455,250"></path>
+        <path class="draw dn" d="M645,210 C 760,210 800,80  910,80"></path>
+        <path class="draw dn" d="M645,210 C 760,210 800,210 910,210"></path>
+        <path class="draw dn" d="M645,210 C 760,210 800,340 910,340"></path>
+      </svg>
+
+      <!-- sources -->
+      <div class="node nd-s p-3.5" style="left:0;top:8px;width:190px"><div class="src"><i class="ph-duotone ph-cash-register text-acd text-[20px]"></i> Касса</div><div class="mono text-[10.5px] text-t3 mt-1">билеты · возвраты</div></div>
+      <div class="node nd-s p-3.5" style="left:0;top:108px;width:190px"><div class="src"><i class="ph-duotone ph-users-three text-acd text-[20px]"></i> CRM</div><div class="mono text-[10.5px] text-t3 mt-1">база · сегменты</div></div>
+      <div class="node nd-s p-3.5" style="left:0;top:208px;width:190px"><div class="src"><i class="ph-duotone ph-coffee text-acd text-[20px]"></i> Бар</div><div class="mono text-[10.5px] text-t3 mt-1">чек · позиции</div></div>
+      <div class="node nd-s p-3.5" style="left:0;top:308px;width:190px"><div class="src"><i class="ph-duotone ph-package text-acd text-[20px]"></i> Склад</div><div class="mono text-[10.5px] text-t3 mt-1">остатки · списания</div></div>
+
+      <!-- core -->
+      <div class="nd-core" style="position:absolute;left:455px;top:150px;width:190px;height:120px">
+        <div class="absolute inset-0 rounded-[16px]" style="background:#0E1A1E;color:#fff;overflow:hidden">
+          <div class="core-glow" style="position:absolute;inset:-30px;background:radial-gradient(circle,rgba(22,192,212,.45),transparent 60%)"></div>
+          <div class="relative h-full flex flex-col items-center justify-center text-center px-3">
+            <div class="lbl" style="color:#16C0D4">AI-ядро</div>
+            <div class="flex -space-x-1.5 mt-2.5">
+              <span class="w-7 h-7 rounded-full bg-white/10 border border-white/15 grid place-items-center" style="color:#16C0D4"><i class="ph ph-gauge text-[13px]"></i></span>
+              <span class="w-7 h-7 rounded-full bg-white/10 border border-white/15 grid place-items-center" style="color:#16C0D4"><i class="ph ph-ticket text-[13px]"></i></span>
+              <span class="w-7 h-7 rounded-full bg-white/10 border border-white/15 grid place-items-center" style="color:#16C0D4"><i class="ph ph-megaphone text-[13px]"></i></span>
+              <span class="w-7 h-7 rounded-full bg-white/10 border border-white/15 grid place-items-center" style="color:#16C0D4"><i class="ph ph-chart-pie-slice text-[13px]"></i></span>
+              <span class="w-7 h-7 rounded-full bg-white/10 border border-white/15 grid place-items-center" style="color:#16C0D4"><i class="ph ph-scales text-[13px]"></i></span>
+            </div>
+            <div class="text-[11.5px] text-white/65 mt-2.5 leading-tight">5 агентов<br>на Claude</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- outcomes -->
+      <div class="node nd-o p-3.5" style="left:910px;top:40px;width:190px"><div class="src"><i class="ph-duotone ph-squares-four text-pos text-[20px]"></i> Живой дашборд</div></div>
+      <div class="node nd-o p-3.5" style="left:910px;top:170px;width:190px"><div class="src"><i class="ph-duotone ph-lightbulb text-pos text-[20px]"></i> Готовые решения</div></div>
+      <div class="node nd-o p-3.5" style="left:910px;top:300px;width:190px"><div class="src"><i class="ph-duotone ph-sun-horizon text-pos text-[20px]"></i> Дайджест · алерты</div></div>
+    </div>
+  </section>
+
+  <!-- 05 · AGENTS — Опердир -->
+  <section data-anim="agents1" class="flexc">
+    <div class="eyebrow anim-up">Пять AI-агентов для вашей сети</div>
+    <h2 class="text-[44px] mt-4 anim-up">Команда из пяти директоров, которая не спит.</h2>
+    <div class="grid grid-cols-[1.15fr_.85fr] gap-6 mt-10">
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-7 card-sh">
+        <div class="flex items-center justify-between">
+          <span class="w-12 h-12 rounded-[13px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-gauge text-[25px]"></i></span>
+          <span class="lbl text-t3">Агент 01</span>
+        </div>
+        <div class="text-[22px] font-bold mt-4">Операционный директор</div>
+        <p class="text-[14.5px] text-t2 leading-relaxed mt-2">В реальном времени отслеживает загрузку залов и нагрузку сети, оптимизирует распределение персонала и задач между точками.</p>
+        <div class="flex flex-wrap gap-2 mt-4">
+          <span class="mono text-[11px] text-t2 border border-line rounded-full px-3 py-1">посещаемость</span>
+          <span class="mono text-[11px] text-t2 border border-line rounded-full px-3 py-1">загрузка залов</span>
+          <span class="mono text-[11px] text-t2 border border-line rounded-full px-3 py-1">ср. чек</span>
+          <span class="mono text-[11px] text-t2 border border-line rounded-full px-3 py-1">конверсия</span>
+        </div>
+      </div>
+      <div class="fragment fade-up bg-act border border-ac/40 rounded-card p-7 flex flex-col justify-center">
+        <div class="flex items-center gap-2 eyebrow mb-2"><i class="ph-fill ph-sparkle"></i> Пример решения</div>
+        <div class="text-[18px] font-semibold leading-snug text-ink">«Монитор СБС»: вечерняя загрузка 94% — добавьте кассира на 18:00–22:00 и перераспределите нагрузку с «Сити».</div>
+        <div class="mono text-[12px] text-acd mt-4">→ не отчёт. Конкретное действие.</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-3 mt-8 anim-up text-t3">
+      <span class="lbl">Остальные четыре →</span>
+      <span class="w-8 h-8 rounded-full bg-elev grid place-items-center text-acd"><i class="ph-bold ph-ticket"></i></span>
+      <span class="w-8 h-8 rounded-full bg-elev grid place-items-center text-acd"><i class="ph-bold ph-megaphone"></i></span>
+      <span class="w-8 h-8 rounded-full bg-elev grid place-items-center text-acd"><i class="ph-bold ph-chart-pie-slice"></i></span>
+      <span class="w-8 h-8 rounded-full bg-elev grid place-items-center text-acd"><i class="ph-bold ph-scales"></i></span>
+    </div>
+  </section>
+
+  <!-- 06 · AGENTS 02-05 -->
+  <section data-anim="agents2" class="flexc">
+    <div class="eyebrow anim-up">Агенты 02–05</div>
+    <h2 class="text-[40px] mt-4 anim-up">Каждый отвечает за свой срез сети.</h2>
+    <div class="grid grid-cols-2 gap-5 mt-9">
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-6 card-sh">
+        <div class="flex items-center gap-3.5"><span class="w-11 h-11 rounded-[12px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-ticket text-[21px]"></i></span><div><div class="text-[18px] font-bold leading-tight">Букер</div><div class="lbl text-t3 mt-0.5">Агент 02 · репертуар</div></div></div>
+        <p class="text-[14px] text-t2 leading-relaxed mt-3">Анализирует фильмы, сборы, время показа и заполняемость — рекомендует сетки сеансов под реальный спрос ваших зрителей.</p>
+        <div class="mono text-[12px] text-acd mt-3">→ перенести утренний сеанс в «Сити» на 11:30 · спрос +18%</div>
+      </div>
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-6 card-sh">
+        <div class="flex items-center gap-3.5"><span class="w-11 h-11 rounded-[12px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-megaphone text-[20px]"></i></span><div><div class="text-[18px] font-bold leading-tight">Маркетолог</div><div class="lbl text-t3 mt-0.5">Агент 03 · клиенты</div></div></div>
+        <p class="text-[14px] text-t2 leading-relaxed mt-3">CRM, RFM-сегменты, возвратность. Сам запускает кампании в email / SMS / Telegram / push и считает их отдачу.</p>
+        <div class="mono text-[12px] text-acd mt-3">→ вернуть «спящих» зрителей акцией на вторник</div>
+      </div>
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-6 card-sh">
+        <div class="flex items-center gap-3.5"><span class="w-11 h-11 rounded-[12px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-chart-pie-slice text-[20px]"></i></span><div><div class="text-[18px] font-bold leading-tight">Финансовый директор</div><div class="lbl text-t3 mt-0.5">Агент 04 · деньги</div></div></div>
+        <p class="text-[14px] text-t2 leading-relaxed mt-3">Прибыль, расходы, отклонения от плана. Формирует P&amp;L и прогноз по месяцу и кварталу для всей сети.</p>
+        <div class="mono text-[12px] text-acd mt-3">→ маржа бара в «Туапсе» ниже сети на 6 п.п.</div>
+      </div>
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-6 card-sh">
+        <div class="flex items-center gap-3.5"><span class="w-11 h-11 rounded-[12px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-scales text-[20px]"></i></span><div><div class="text-[18px] font-bold leading-tight">Юрист</div><div class="lbl text-t3 mt-0.5">Агент 05 · договоры</div></div></div>
+        <p class="text-[14px] text-t2 leading-relaxed mt-3">Аренда, контракты, соглашения с прокатчиками. Подсвечивает риски, сроки и спорные пункты до того, как они станут проблемой.</p>
+        <div class="mono text-[12px] text-acd mt-3">→ аренда «Краснодар» истекает через 45 дней</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 · DASHBOARD -->
+  <section data-anim="dashboard" class="flexc">
+    <div class="flex items-end justify-between anim-up">
+      <div><div class="eyebrow">Платформа</div><h2 class="text-[40px] mt-3">Вся сеть на одном экране.</h2></div>
+      <a class="btngh" href="dashboard.html" target="_blank">Открыть живой дашборд <i class="ph-bold ph-arrow-up-right text-[15px]"></i></a>
+    </div>
+    <div class="bg-surf border border-line rounded-card p-5 card-sh mt-7">
+      <div class="grid grid-cols-7 gap-2.5">
+        <div class="bg-elev rounded-[10px] p-3"><div class="lbl text-t3">Выручка день</div><div class="text-[19px] font-bold num mt-1" data-count="4.82" data-dec="2" data-pre="₽" data-suf="М">₽4.82М</div></div>
+        <div class="bg-elev rounded-[10px] p-3"><div class="lbl text-t3">Выручка мес.</div><div class="text-[19px] font-bold num mt-1" data-count="118.6" data-dec="1" data-pre="₽" data-suf="М">₽118.6М</div></div>
+        <div class="bg-elev rounded-[10px] p-3"><div class="lbl text-t3">Гости</div><div class="text-[19px] font-bold num mt-1" data-count="14280">14 280</div></div>
+        <div class="bg-elev rounded-[10px] p-3"><div class="lbl text-t3">Ср. билет</div><div class="text-[19px] font-bold num mt-1" data-count="338" data-pre="₽">₽338</div></div>
+        <div class="bg-elev rounded-[10px] p-3"><div class="lbl text-t3">Чек бара</div><div class="text-[19px] font-bold num mt-1" data-count="427" data-pre="₽">₽427</div></div>
+        <div class="bg-elev rounded-[10px] p-3"><div class="lbl text-t3">EBITDA</div><div class="text-[19px] font-bold num mt-1 text-acd" data-count="26.3" data-dec="1" data-suf="%">26.3%</div></div>
+        <div class="bg-elev rounded-[10px] p-3"><div class="lbl text-t3">План/факт</div><div class="text-[19px] font-bold num mt-1" data-count="92" data-suf="%">92%</div></div>
+      </div>
+      <div class="grid grid-cols-3 gap-3 mt-3">
+        <div class="col-span-2 bg-elev rounded-[10px] p-4">
+          <div class="flex items-center justify-between"><div class="lbl text-t3">Выручка по сети · 30 дней</div><div class="mono text-[11.5px] text-acd">+12.1%</div></div>
+          <svg class="w-full mt-2" height="200" viewBox="0 0 600 200" preserveAspectRatio="none">
+            <defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16C0D4" stop-opacity=".24"/><stop offset="1" stop-color="#16C0D4" stop-opacity="0"/></linearGradient></defs>
+            <path id="chArea" d="M0 150 C 40 140 60 158 100 120 C 140 90 170 104 210 74 C 250 48 290 64 330 44 C 380 22 430 36 470 22 C 520 10 560 18 600 12 L 600 200 L 0 200 Z" fill="url(#pg)" opacity="0"/>
+            <path id="chLine" class="draw" d="M0 150 C 40 140 60 158 100 120 C 140 90 170 104 210 74 C 250 48 290 64 330 44 C 380 22 430 36 470 22 C 520 10 560 18 600 12" stroke="#0E97A8" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <div class="bg-elev rounded-[10px] p-4">
+          <div class="lbl text-t3 mb-3">Рейтинг сети</div>
+          <div class="space-y-2.5">
+            <div class="rk"><span class="mono font-bold text-acd w-4">1</span><span class="flex-1 truncate font-medium text-[13px]">Монитор СБС</span><span class="num font-semibold text-pos text-[13px]">+14%</span><div class="bar"><i data-w="100"></i></div></div>
+            <div class="rk"><span class="mono font-bold text-t3 w-4">2</span><span class="flex-1 truncate font-medium text-[13px]">Кр. Площадь</span><span class="num font-semibold text-pos text-[13px]">+9%</span><div class="bar"><i data-w="82"></i></div></div>
+            <div class="rk"><span class="mono font-bold text-t3 w-4">3</span><span class="flex-1 truncate font-medium text-[13px]">Монитор Сити</span><span class="num font-semibold text-pos text-[13px]">+6%</span><div class="bar"><i data-w="70"></i></div></div>
+            <div class="rk"><span class="mono font-bold text-t3 w-4">4</span><span class="flex-1 truncate font-medium text-[13px]">Сочи Парк</span><span class="num font-semibold text-pos text-[13px]">+3%</span><div class="bar"><i data-w="58"></i></div></div>
+            <div class="rk"><span class="mono font-bold text-neg w-4">19</span><span class="flex-1 truncate font-medium text-t2 text-[13px]">Туапсе</span><span class="num font-semibold text-neg text-[13px]">−8%</span><div class="bar"><i data-w="26" data-neg="1"></i></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="text-[13.5px] text-t3 mt-4 anim-up mono">Это живой экран платформы — KPI, график и рейтинг обновляются в реальном времени.</p>
+  </section>
+
+  <!-- 08 · DIGEST -->
+  <section data-anim="digest" class="flexc">
+    <div class="grid grid-cols-[1.05fr_.95fr] gap-14 items-center">
+      <div>
+        <div class="eyebrow anim-up">Автоматизация · 08:00 каждый день</div>
+        <h2 class="text-[42px] mt-4 anim-up">Утренний дайджест вам — без единого клика.</h2>
+        <p class="text-[16.5px] text-t2 leading-relaxed mt-5 anim-up">Каждое утро система присылает свод за вчера: выручка, лидеры и аутсайдеры сети,
+           рекомендации всех агентов. В Telegram — текстом и голосом, плюс PDF с KPI, графиками и прогнозом.</p>
+        <div class="flex flex-wrap gap-3 mt-7">
+          <span class="chip fragment fade-up"><i class="ph-fill ph-telegram-logo text-acd text-[16px]"></i> Telegram</span>
+          <span class="chip fragment fade-up"><i class="ph-bold ph-file-pdf text-acd text-[16px]"></i> PDF-отчёт</span>
+          <span class="chip fragment fade-up"><i class="ph-bold ph-waveform text-acd text-[16px]"></i> Голосовая сводка</span>
+        </div>
+      </div>
+      <div class="bg-surf border border-line rounded-card p-6 card-sh max-w-[430px] ml-auto">
+        <div class="flex items-center gap-2.5 pb-3.5 border-b border-line"><span class="logo !w-9 !h-9"><i class="ph-fill ph-play text-white text-[14px] ml-0.5"></i></span><div><div class="text-[14px] font-semibold">МОНИТОР · Дайджест</div><div class="mono text-[11px] text-t3">сегодня, 08:00</div></div></div>
+        <div class="text-[14px] leading-relaxed mt-4 space-y-3">
+          <div class="fragment fade-up">☀️ <b>Доброе утро, Алексей.</b> Сводка по сети за вчера:</div>
+          <div class="fragment fade-up bg-elev rounded-[11px] p-3.5 num"><div class="flex justify-between"><span class="text-t2">Выручка сети</span><b>₽4.61М</b></div><div class="flex justify-between mt-1.5"><span class="text-t2">Гости</span><b>13 640</b></div><div class="flex justify-between mt-1.5"><span class="text-t2">Загрузка</span><b class="text-acd">71%</b></div></div>
+          <div class="fragment fade-up">🏆 Лидер: <b>Монитор СБС</b> (+14%) · 📉 Аутсайдер: <b>Туапсе</b> (−8%)</div>
+          <div class="fragment fade-up bg-act border border-ac/30 rounded-[11px] p-3.5"><span class="text-acd font-semibold">2 рекомендации агентов:</span> усилить вечер в СБС, перенести утро в Сити.</div>
+          <div class="fragment fade-up flex items-center gap-2 text-acd mono text-[12px] pt-1"><i class="ph-fill ph-play-circle text-[20px]"></i> Голосовая сводка · 0:48</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 · ROLLOUT -->
+  <section data-anim="rollout" class="flexc">
+    <div class="eyebrow anim-up">Внедрение</div>
+    <h2 class="text-[42px] mt-4 anim-up">От подключения до решений — за три фазы.</h2>
+    <div class="relative mt-12">
+      <div class="absolute left-0 right-0 top-[26px] h-[2px] bg-line"></div>
+      <div id="tlfill" class="absolute left-0 top-[26px] h-[2px]" style="width:0;background:#16C0D4"></div>
+      <div class="grid grid-cols-3 gap-6 relative">
+        <div class="fragment fade-up">
+          <div class="w-[54px] h-[54px] rounded-full bg-surf border-2 border-ac grid place-items-center text-acd"><i class="ph-bold ph-plugs-connected text-[24px]"></i></div>
+          <div class="mono text-[12px] text-acd mt-4">Фаза 1 · 1–2 недели</div>
+          <div class="text-[19px] font-bold mt-1">Подключаем источники</div>
+          <p class="text-[14px] text-t2 leading-relaxed mt-2">Касса, CRM, бар и склад всех 19 точек — выгрузки или API. Данные сводятся в единое хранилище.</p>
+        </div>
+        <div class="fragment fade-up">
+          <div class="w-[54px] h-[54px] rounded-full bg-surf border-2 border-ac grid place-items-center text-acd"><i class="ph-bold ph-robot text-[24px]"></i></div>
+          <div class="mono text-[12px] text-acd mt-4">Фаза 2 · 2–3 недели</div>
+          <div class="text-[19px] font-bold mt-1">Запускаем агентов и дашборд</div>
+          <p class="text-[14px] text-t2 leading-relaxed mt-2">5 AI-агентов на Claude + живой командный центр. Вы видите всю сеть и получаете первые рекомендации.</p>
+        </div>
+        <div class="fragment fade-up">
+          <div class="w-[54px] h-[54px] rounded-full bg-surf border-2 border-ac grid place-items-center text-acd"><i class="ph-bold ph-sun-horizon text-[24px]"></i></div>
+          <div class="mono text-[12px] text-acd mt-4">Фаза 3 · далее</div>
+          <div class="text-[19px] font-bold mt-1">Автоматизация</div>
+          <p class="text-[14px] text-t2 leading-relaxed mt-2">Дайджест 08:00 (текст + голос + PDF), алерты при отклонениях, прогнозы. Система работает сама.</p>
+        </div>
+      </div>
+    </div>
+    <p class="text-[13px] text-t3 mt-10 mono anim-up">Технологии: AI-слой на Claude (Sonnet 4.6 / Opus 4.8 / Haiku 4.5) · голос — ElevenLabs · данные не покидают ваш контур.</p>
+  </section>
+
+  <!-- 10 · VALUE -->
+  <section data-anim="value" class="flexc">
+    <div class="eyebrow anim-up">Что это даёт вам</div>
+    <h2 class="text-[44px] mt-4 anim-up">Не дашборд ради дашборда — управляемость сети.</h2>
+    <div class="grid grid-cols-3 gap-5 mt-12">
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-7 card-sh">
+        <span class="w-12 h-12 rounded-[13px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-eye text-[24px]"></i></span>
+        <div class="text-[19px] font-bold mt-4">Единая картина</div>
+        <p class="text-[14px] text-t2 leading-relaxed mt-2">Все 19 точек и 4 системы — в реальном времени, на одном экране. Без выгрузок и ручных таблиц.</p>
+      </div>
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-7 card-sh">
+        <span class="w-12 h-12 rounded-[13px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-lightning text-[24px]"></i></span>
+        <div class="text-[19px] font-bold mt-4">Решения, а не отчёты</div>
+        <p class="text-[14px] text-t2 leading-relaxed mt-2">Агенты говорят, что именно сделать сегодня — и пока смена не прошла, а не задним числом.</p>
+      </div>
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-7 card-sh">
+        <span class="w-12 h-12 rounded-[13px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-trend-up text-[24px]"></i></span>
+        <div class="text-[19px] font-bold mt-4">Рост выручки и маржи</div>
+        <p class="text-[14px] text-t2 leading-relaxed mt-2">Оптимизированные сетки сеансов, бар и персонал — каждая точка работает на свой максимум.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 · CTA -->
+  <section data-anim="cta" class="flexc" style="align-items:center;text-align:center">
+    <div class="glowline w-[120px] mx-auto cta-glow"></div>
+    <h2 class="text-[58px] font-bold mt-8 tracking-[-0.03em] anim-up" style="line-height:1.06">Готовы увидеть «Монитор»<br>глазами AI?</h2>
+    <p class="text-[18px] text-t2 mt-6 max-w-[600px] anim-up">Запустим командный центр на данных вашей сети. Покажем на живом дашборде за 30 минут — без обязательств.</p>
+    <div class="flex items-center justify-center gap-4 mt-10 anim-up">
+      <a class="btnac" href="#cta">Обсудить внедрение <i class="ph-bold ph-arrow-right text-[15px]"></i></a>
+      <a class="btngh" href="dashboard.html" target="_blank">Открыть живой дашборд</a>
+    </div>
+    <div class="flex items-center justify-center gap-2.5 mt-16 anim-up">
+      <span class="logo !w-9 !h-9"><i class="ph-fill ph-play text-white text-[14px] ml-0.5"></i></span>
+      <div class="text-left"><div class="text-[15px] font-bold">МОНИТОР</div><div class="mono text-[11px] text-t3">AI-командный центр сети · демо-данные синтетические</div></div>
+    </div>
+  </section>
+
+ </div>
+</div>
+
+<!-- nav -->
+<div class="navbar">
+  <button class="nbtn" id="prevBtn" aria-label="Назад"><i class="ph-bold ph-arrow-left"></i></button>
+  <div class="nmeta"><span class="mono"><b id="curNum">01</b>/<span id="totNum">11</span></span> · <b id="slLabel">Обложка</b></div>
+  <div class="dots" id="dots"></div>
+  <button class="nbtn primary" id="nextBtn">Далее <i class="ph-bold ph-arrow-right"></i></button>
+</div>
+<div class="kbd-hint">навигация: <b>←</b> <b>→</b> · <b>пробел</b> · <b>F</b> — на весь экран</div>
+<div class="grain"></div>
+
+<style>
+ .rk{display:grid;grid-template-columns:16px 1fr auto;align-items:center;column-gap:8px;row-gap:4px}
+ .rk .bar{grid-column:1 / -1;height:5px;background:#DCE6E9;border-radius:99px;overflow:hidden}
+ .rk .bar>i{display:block;height:100%;width:0;background:#16C0D4;border-radius:99px}
+ .rk .bar>i[data-neg]{background:#DC2626}
+</style>
+
+<script>
+(function(){
+  const LABELS=['Обложка','Сеть сегодня','Проблема','Решение','Агент 01','Агенты 02–05','Дашборд','Дайджест 08:00','Внедрение','Ценность','Финал'];
+
+  Reveal.initialize({
+    hash:true, controls:false, progress:false, slideNumber:false,
+    transition:'slide', transitionSpeed:'default', backgroundTransition:'fade',
+    width:1280, height:720, margin:0, minScale:.2, maxScale:2, center:true,
+    keyboard:true, touch:true
+  });
+
+  // dots
+  const dotsEl=document.getElementById('dots');
+  LABELS.forEach((_,i)=>{ const d=document.createElement('span'); d.className='dot'; d.onclick=()=>Reveal.slide(i); dotsEl.appendChild(d); });
+  const dots=[...dotsEl.children];
+  document.getElementById('totNum').textContent=String(LABELS.length).padStart(2,'0');
+  document.getElementById('prevBtn').onclick=()=>Reveal.prev();
+  document.getElementById('nextBtn').onclick=()=>Reveal.next();
+
+  function pad(n){return String(n+1).padStart(2,'0');}
+  function updateBar(i){
+    document.getElementById('curNum').textContent=pad(i);
+    document.getElementById('slLabel').textContent=LABELS[i]||'';
+    dots.forEach((d,k)=>d.classList.toggle('on',k===i));
+    document.getElementById('prevBtn').disabled = i===0;
+    const nb=document.getElementById('nextBtn');
+    if(i===LABELS.length-1){ nb.innerHTML='В начало <i class="ph-bold ph-arrow-counter-clockwise"></i>'; nb.onclick=()=>Reveal.slide(0); }
+    else { nb.innerHTML='Далее <i class="ph-bold ph-arrow-right"></i>'; nb.onclick=()=>Reveal.next(); }
+  }
+
+  // ---------- helpers ----------
+  function fmt(v,dec){ let s=dec?(+v).toFixed(dec):Math.round(v).toString(); const p=s.split('.'); p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,' '); return p.join('.'); }
+  function runCount(el){
+    const t=parseFloat(el.dataset.count), dec=+(el.dataset.dec||0), pre=el.dataset.pre||'', suf=el.dataset.suf||'';
+    const o={v:0}; gsap.killTweensOf(o);
+    gsap.to(o,{v:t,duration:1.1,ease:'power2.out',onUpdate:()=>{el.textContent=pre+fmt(o.v,dec)+suf;},onComplete:()=>{el.textContent=pre+fmt(t,dec)+suf;}});
+  }
+  function drawPath(p,dur,delay){
+    const len=p.getTotalLength(); if(!len) return 0;
+    p.style.strokeDasharray=len; p.style.strokeDashoffset=len;
+    gsap.to(p.style,{strokeDashoffset:0,duration:dur,delay:delay||0,ease:'power2.out'});
+    return len;
+  }
+  function headsUp(s){ const els=s.querySelectorAll('.anim-up'); if(els.length) gsap.from(els,{opacity:0,y:18,duration:.55,stagger:.07,ease:'power2.out'}); }
+
+  // ---------- per-slide ----------
+  const ANIM={
+    cover(s){
+      const tl=gsap.timeline();
+      tl.from(s.querySelector('.cv-logo'),{opacity:0,y:-12,duration:.5,ease:'power2.out'})
+        .from(s.querySelector('.cv-eye'),{opacity:0,y:10,duration:.45},'-=.15')
+        .from(s.querySelectorAll('.cv-line'),{yPercent:115,duration:.7,stagger:.1,ease:'power3.out'},'-=.1')
+        .from(s.querySelector('.cv-sub'),{opacity:0,y:14,duration:.5},'-=.3')
+        .fromTo(s.querySelector('.cv-glow'),{scaleX:0},{scaleX:1,duration:.6,ease:'power2.out'},'-=.25')
+        .from(s.querySelector('.cv-trust'),{opacity:0,y:14,duration:.5},'-=.3');
+    },
+    scale(s){ headsUp(s); s.querySelectorAll('[data-count]').forEach(runCount); },
+    problem(s){ headsUp(s); },
+    idea(s){
+      headsUp(s);
+      const cn=[...s.querySelectorAll('.cn')], dn=[...s.querySelectorAll('.dn')];
+      const core=s.querySelector('.nd-core'), glow=s.querySelector('.core-glow');
+      gsap.from(s.querySelectorAll('.nd-s'),{opacity:0,x:-26,duration:.5,stagger:.08,ease:'power2.out'});
+      cn.forEach((p,i)=>drawPath(p,.7,.35+i*.09));
+      gsap.fromTo(core,{opacity:0,scale:.8},{opacity:1,scale:1,duration:.5,delay:.8,ease:'back.out(1.6)'});
+      gsap.fromTo(glow,{opacity:.2,scale:.8},{opacity:.7,scale:1.05,duration:1.4,delay:.9,repeat:-1,yoyo:true,ease:'sine.inOut'});
+      dn.forEach((p,i)=>drawPath(p,.7,1.15+i*.09));
+      gsap.from(s.querySelectorAll('.nd-o'),{opacity:0,x:26,duration:.5,stagger:.1,delay:1.35,ease:'power2.out'});
+    },
+    agents1(s){ headsUp(s); },
+    agents2(s){ headsUp(s); },
+    dashboard(s){
+      headsUp(s);
+      s.querySelectorAll('[data-count]').forEach(runCount);
+      const line=s.querySelector('#chLine'), area=s.querySelector('#chArea');
+      drawPath(line,1.3,.2);
+      gsap.fromTo(area,{opacity:0},{opacity:1,duration:.8,delay:1.0});
+      s.querySelectorAll('.rk .bar>i').forEach((b,i)=>gsap.fromTo(b,{width:'0%'},{width:b.dataset.w+'%',duration:.9,delay:.3+i*.1,ease:'power2.out'}));
+    },
+    digest(s){ headsUp(s); },
+    rollout(s){
+      headsUp(s);
+      const f=s.querySelector('#tlfill'); if(f) gsap.fromTo(f,{width:'0%'},{width:'100%',duration:1.6,ease:'power2.inOut'});
+    },
+    value(s){ headsUp(s); },
+    cta(s){
+      headsUp(s);
+      const g=s.querySelector('.cta-glow'); if(g) gsap.fromTo(g,{scaleX:0},{scaleX:1,duration:.7,ease:'power2.out'});
+    }
+  };
+
+  function runAnim(slide){ const k=slide&&slide.dataset.anim; if(k&&ANIM[k]) ANIM[k](slide); }
+
+  Reveal.on('ready',e=>{ updateBar(e.indexh); runAnim(e.currentSlide); });
+  Reveal.on('slidechanged',e=>{ updateBar(e.indexh); runAnim(e.currentSlide); });
+})();
+</script>
+</body>
+</html>
