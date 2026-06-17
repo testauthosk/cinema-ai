@@ -507,16 +507,24 @@ tailwind.config={theme:{extend:{
     </div>
   </section>
 
-  <!-- 13 · CTA -->
-  <section data-anim="cta" style="text-align:center">
-    <div class="glowline w-[120px] mx-auto cta-glow"></div>
-    <h2 class="text-[56px] font-bold mt-8 tracking-[-0.03em] anim-up" style="line-height:1.06">Готовы увидеть «Монитор»<br>глазами AI?</h2>
-    <p class="text-[18px] text-t2 mt-6 max-w-[600px] mx-auto anim-up">Запустим командный центр на данных вашей сети. Покажем на живом дашборде за 30 минут — без обязательств.</p>
-    <div class="flex items-center justify-center gap-4 mt-10 anim-up">
-      <a class="btnac" href="#cta">Обсудить внедрение <i class="ph-bold ph-arrow-right text-[15px]"></i></a>
-      <a class="btngh" href="dashboard.html" target="_blank">Открыть живой дашборд</a>
+  <!-- 13 · FINALE -->
+  <section data-anim="finale" style="text-align:center">
+    <div class="eyebrow fl-eye">Монитор · итог</div>
+    <h2 class="text-[58px] font-bold mt-5 tracking-[-0.03em]" style="line-height:1.1">
+      <span class="mask"><span class="fl-line">Вся сеть — на одном экране.</span></span>
+      <span class="mask"><span class="fl-line">Решения, <span class="text-acd">а не отчёты</span>.</span></span>
+      <span class="mask"><span class="fl-line">Каждое утро — сама.</span></span>
+    </h2>
+    <div class="glowline w-[140px] mx-auto mt-8 fl-glow"></div>
+    <div class="flex items-center justify-center gap-9 mt-9 fl-stats text-t3">
+      <div><div class="text-[30px] font-bold num text-ink" data-count="19">19</div><div class="lbl mt-0.5">кинотеатров</div></div>
+      <div class="w-px h-11 bg-line"></div>
+      <div><div class="text-[30px] font-bold num text-ink" data-count="5">5</div><div class="lbl mt-0.5">AI-агентов</div></div>
+      <div class="w-px h-11 bg-line"></div>
+      <div><div class="text-[30px] font-bold num text-ink">24/7</div><div class="lbl mt-0.5">анализ → решение</div></div>
     </div>
-    <div class="flex items-center justify-center gap-2.5 mt-14 anim-up">
+    <div class="text-[16px] text-t2 mt-9 fl-fwd">Запустим командный центр на данных вашей сети — за три недели.</div>
+    <div class="flex items-center justify-center gap-2.5 mt-12 fl-logo">
       <span class="logo !w-9 !h-9"><i class="ph-fill ph-play text-white text-[14px] ml-0.5"></i></span>
       <div class="text-left"><div class="text-[15px] font-bold">МОНИТОР</div><div class="mono text-[11px] text-t3">AI-командный центр сети</div></div>
     </div>
@@ -562,7 +570,7 @@ tailwind.config={theme:{extend:{
     'Утренний дайджест приходит сам, без единого клика.',
     'Все точки на связи в реальном времени.',
     'Не дашборд ради дашборда — управляемость сети.',
-    'Запустим командный центр на данных вашей сети.'
+    'Вся сеть как на ладони — каждый день.'
   ];
 
   Reveal.initialize({
@@ -615,9 +623,8 @@ tailwind.config={theme:{extend:{
   function buildMap(){
     const E=document.getElementById('netEdges'),P=document.getElementById('netPins'); if(!E||E.childNodes.length) return;
     const PINS=[{x:430,y:200,hq:1,label:'Краснодар'},{x:815,y:345,label:'Сочи',val:'88%',pos:1},{x:360,y:64,label:'Ростов'},{x:205,y:285,label:'Новороссийск'},{x:110,y:240,label:'Анапа'},{x:270,y:340},{x:560,y:320,label:'Туапсе',val:'−8%',neg:1},{x:650,y:92,label:'Ставрополь'},{x:600,y:175},{x:905,y:380},{x:480,y:300},{x:565,y:120},{x:520,y:60},{x:300,y:44},{x:670,y:255},{x:470,y:248},{x:250,y:175},{x:345,y:150},{x:478,y:158,val:'94%',pos:1}];
-    const extra=[[4,3],[3,5],[1,9],[7,8],[2,17]];
-    const edges=[]; for(let i=1;i<PINS.length;i++) edges.push([0,i]); extra.forEach(e=>edges.push(e));
-    edges.forEach(([a,b])=>{ const A=PINS[a],B=PINS[b],mx=(A.x+B.x)/2,my=(A.y+B.y)/2,dx=B.x-A.x,dy=B.y-A.y,len=Math.hypot(dx,dy)||1,off=Math.min(38,len*.16); const cx=mx-dy/len*off,cy=my+dx/len*off; E.appendChild(mEl('path',{d:'M'+A.x+' '+A.y+' Q'+cx+' '+cy+' '+B.x+' '+B.y,class:'medge'})); });
+    const hub=PINS[0];
+    for(let i=1;i<PINS.length;i++){ const B=PINS[i]; E.appendChild(mEl('path',{d:'M'+B.x+' '+B.y+' L'+hub.x+' '+hub.y,class:'medge'})); }
     PINS.forEach((pn,i)=>{
       const g=mEl('g',{transform:'translate('+pn.x+' '+pn.y+')'}); const inner=mEl('g',{class:'mpin-inner'});
       if(!pn.hq){ inner.appendChild(mEl('circle',{cx:0,cy:0,r:7,class:'mpulse',style:'animation-delay:'+(i*.13)+'s'})); inner.appendChild(mEl('circle',{cx:0,cy:0,r:4.5,class:'mdot'})); }
@@ -665,7 +672,14 @@ tailwind.config={theme:{extend:{
       gsap.from(s.querySelectorAll('.mpin-inner'),{scale:0,opacity:0,transformOrigin:'50% 50%',duration:.45,stagger:.05,delay:.3,ease:'back.out(1.8)'});
       gsap.from(s.querySelectorAll('.mlabel,.mlabel-hub,.mval-pos,.mval-neg'),{opacity:0,duration:.5,stagger:.03,delay:.9}); },
     value(s){ headsUp(s); },
-    cta(s){ headsUp(s); const g=s.querySelector('.cta-glow'); if(g) gsap.fromTo(g,{scaleX:0},{scaleX:1,duration:.7,ease:'power2.out'}); }
+    finale(s){ const tl=gsap.timeline();
+      tl.from(s.querySelector('.fl-eye'),{opacity:0,y:10,duration:.45,ease:'power2.out'})
+        .from(s.querySelectorAll('.fl-line'),{yPercent:118,duration:.7,stagger:.1,ease:'power3.out'},'-=.1')
+        .fromTo(s.querySelector('.fl-glow'),{scaleX:0},{scaleX:1,duration:.6,ease:'power2.out'},'-=.2')
+        .add(()=>s.querySelectorAll('[data-count]').forEach(runCount))
+        .from(s.querySelector('.fl-stats'),{opacity:0,y:14,duration:.5},'<')
+        .from(s.querySelector('.fl-fwd'),{opacity:0,y:12,duration:.45},'-=.2')
+        .from(s.querySelector('.fl-logo'),{opacity:0,y:12,duration:.45},'-=.2'); }
   };
   function runAnim(slide){ const k=slide&&slide.dataset.anim; if(k&&ANIM[k]) ANIM[k](slide); }
 
