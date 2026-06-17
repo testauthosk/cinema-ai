@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>СИНЕМА · AI-командный центр сети кинотеатров — презентация</title>
+
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{
+ colors:{bg:'#F6FAFB',surf:'#FFFFFF',elev:'#EEF4F5',line:'#DCE6E9',ink:'#0E1A1E',t2:'#52656C',t3:'#8498A0',
+  ac:'#16C0D4',acd:'#0B7C8B',act:'#E4F5F7',amb:'#D9A441',pos:'#16A34A',neg:'#DC2626',warn:'#D97706',dk:'#0E1A1E'},
+ fontFamily:{sans:['"IBM Plex Sans"','system-ui','sans-serif'],mono:['"IBM Plex Mono"','ui-monospace','monospace']},
+ borderRadius:{card:'14px',btn:'10px'}}}}
+</script>
+
+<style>
+ :root{ --ac:#16C0D4; --acd:#0B7C8B; }
+ html,body{margin:0;height:100%;background:#F6FAFB;color:#0E1A1E;font-family:'IBM Plex Sans',sans-serif;-webkit-font-smoothing:antialiased}
+ .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"zero" 1}
+ .mono{font-family:'IBM Plex Mono',monospace}
+ .eyebrow{font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.16em;font-size:12px;font-weight:600;color:#0B7C8B}
+ .lbl{text-transform:uppercase;letter-spacing:.08em;font-size:11px;font-weight:600}
+
+ .stage{position:fixed;inset:0;z-index:0;pointer-events:none;background:
+   radial-gradient(120% 80% at 88% 2%, rgba(22,192,212,.10), transparent 46%),
+   radial-gradient(80% 70% at 2% 100%, rgba(22,192,212,.06), transparent 55%),#F6FAFB}
+ .bg-dot{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(circle,#D2E2E6 1px,transparent 1px);background-size:32px 32px;opacity:.5}
+ .bgnum{position:fixed;top:50%;right:-26px;transform:translateY(-50%);z-index:0;pointer-events:none;
+   font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:330px;line-height:1;color:#0E1A1E;opacity:.03;user-select:none}
+ .grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.03;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+ .reveal{font-family:'IBM Plex Sans',sans-serif;color:#0E1A1E}
+ .reveal .slides{text-align:left}
+ .reveal .slides section{width:1280px;padding:80px 80px 86px;box-sizing:border-box;overflow:hidden;background:transparent}
+ .reveal h1,.reveal h2,.reveal h3{font-family:'IBM Plex Sans',sans-serif;text-transform:none;letter-spacing:-.022em;margin:0;line-height:1.06;font-weight:700;color:#0E1A1E}
+ .reveal p{margin:0;line-height:1.5}
+ .reveal .controls,.reveal .progress,.reveal .slide-number{display:none}
+
+ .logo{position:relative;width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#16C0D4,#0E97A8);display:grid;place-items:center;box-shadow:0 8px 22px -10px rgba(14,151,168,.7)}
+ .card-sh{box-shadow:0 1px 2px rgba(14,26,30,.04),0 12px 34px -16px rgba(14,26,30,.14)}
+ .glowline{background:linear-gradient(90deg,transparent,#16C0D4,transparent);height:2px;transform-origin:center}
+ .src{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:inherit}
+ .chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;background:#fff;border:1px solid #DCE6E9;border-radius:999px;padding:7px 14px;color:#0E1A1E}
+ .mask{display:block;overflow:hidden;padding-bottom:.06em}
+ .mask>span{display:block}
+ .node{position:absolute;background:#fff;border:1px solid #E4ECEE;border-radius:13px;box-shadow:0 1px 2px rgba(14,26,30,.04),0 14px 30px -18px rgba(14,26,30,.18);color:#0E1A1E}
+
+ /* dark "screenshot" embeds (как в референсе) */
+ .dk{background:linear-gradient(180deg,#11212C 0%,#0C1820 100%);color:#E8F1F3;border:1px solid #20333E;border-radius:12px;box-shadow:0 30px 70px -34px rgba(8,18,24,.7)}
+ .dk .dlbl{font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.08em;font-size:9.5px;font-weight:600;color:#7C9AA6}
+ .dk .dsub{color:#8AA6B1}
+ .dk-cell{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:9px}
+
+ /* chrome */
+ .topbar{position:fixed;top:0;left:0;right:0;z-index:45;display:flex;justify-content:space-between;align-items:center;padding:16px 28px;pointer-events:none}
+ .topbar .tb-left{display:flex;align-items:center;gap:9px;font-weight:700;font-size:14px;color:#0E1A1E}
+ .topbar .tb-right{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#8498A0}
+ .footbar{position:fixed;bottom:0;left:0;right:0;z-index:44;display:flex;justify-content:space-between;align-items:center;padding:13px 28px;pointer-events:none}
+ .footbar .fb-side{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8498A0;letter-spacing:.04em;min-width:130px}
+ .footbar .fb-tag{font-style:italic;font-size:12.5px;color:#52656C;text-align:center;flex:1}
+ .footbar .fb-num{text-align:right}
+
+ .navbar{position:fixed;left:50%;bottom:46px;transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:14px;
+   background:rgba(255,255,255,.86);backdrop-filter:blur(14px);border:1px solid #DCE6E9;border-radius:999px;padding:7px 7px 7px 16px;
+   box-shadow:0 12px 40px -16px rgba(14,26,30,.32)}
+ .nmeta{font-size:12px;font-weight:600;color:#52656C;white-space:nowrap}
+ .nmeta b{color:#0E1A1E}.nmeta .mono{color:#0B7C8B}
+ .dots{display:flex;gap:5px;align-items:center}
+ .dot{width:6px;height:6px;border-radius:50%;background:#CBD9DD;cursor:pointer;transition:all .25s ease}
+ .dot.on{background:#16C0D4;width:20px;border-radius:99px}
+ .nbtn{width:36px;height:36px;border-radius:50%;border:1px solid #CBD9DD;background:#fff;color:#0E1A1E;display:grid;place-items:center;cursor:pointer;transition:all .15s ease;font-size:15px}
+ .nbtn:hover{border-color:#16C0D4;color:#0B7C8B}
+ .nbtn:disabled{opacity:.34;cursor:default}
+ .nbtn.primary{width:auto;border-radius:999px;padding:0 17px;height:36px;background:#16C0D4;color:#06181B;border:none;font-weight:600;font-size:13px;gap:7px;box-shadow:0 10px 24px -10px rgba(22,192,212,.8)}
+ .nbtn.primary:hover{background:#0FB0C4;color:#06181B}
+
+ .draw{fill:none;stroke:#16C0D4;stroke-width:2;stroke-linecap:round}
+ .btnac{display:inline-flex;align-items:center;gap:8px;background:#16C0D4;color:#06181B;font-weight:600;border-radius:10px;padding:13px 22px;font-size:15px;transition:all .15s ease;text-decoration:none;box-shadow:0 12px 28px -12px rgba(22,192,212,.8)}
+ .btnac:hover{background:#0FB0C4;transform:translateY(-1px)}
+ .btngh{display:inline-flex;align-items:center;gap:8px;border:1px solid #CBD9DD;color:#0E1A1E;font-weight:600;border-radius:10px;padding:13px 22px;font-size:15px;transition:all .15s ease;text-decoration:none}
+ .btngh:hover{border-color:#16C0D4;background:#F0F8F9}
+ a{color:inherit;text-decoration:none}
+ ::selection{background:#16C0D4;color:#06181B}
+ .reveal .fragment.fade-up{transform:translateY(16px)}
+ .reveal .fragment.fade-up.visible{transform:none}
+
+ .rk{display:grid;grid-template-columns:16px 1fr auto;align-items:center;column-gap:8px;row-gap:4px}
+ .rk .bar{grid-column:1 / -1;height:5px;background:rgba(255,255,255,.10);border-radius:99px;overflow:hidden}
+ .rk .bar>i{display:block;height:100%;width:0;background:#16C0D4;border-radius:99px}
+ .rk .bar>i[data-neg]{background:#F2655A}
+
+ /* network map */
+ .medge{fill:none;stroke:#16C0D4;stroke-width:1.4;opacity:.4}
+ .mdot{fill:#16C0D4}.mhub{fill:#16C0D4}.mhubring{fill:none;stroke:#16C0D4;stroke-width:1.4;opacity:.55}
+ .mhub,.mdot{filter:drop-shadow(0 0 5px rgba(22,192,212,.7))}
+ .mpulse{fill:none;stroke:#16C0D4;stroke-width:1.4;transform-box:fill-box;transform-origin:center;animation:mpulse 2.6s ease-out infinite}
+ @keyframes mpulse{0%{transform:scale(.4);opacity:.5}70%{opacity:0}100%{transform:scale(3);opacity:0}}
+ .mpin-inner{transform-box:fill-box;transform-origin:center}
+ .mlabel{fill:#52656C;font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600}
+ .mlabel-hub{fill:#0E1A1E;font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:700}
+ .mval-pos{fill:#16A34A;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600}
+ .mval-neg{fill:#DC2626;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600}
+ .atile{width:30px;height:36px;border:1px solid #DCE6E9;border-radius:7px;background:#fff;display:grid;place-items:center;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:#8498A0;box-shadow:0 1px 2px rgba(14,26,30,.04)}
+ .atile.on{border-color:#16C0D4;background:#E4F5F7;color:#0B7C8B;box-shadow:0 6px 16px -8px rgba(22,192,212,.6)}
+ .ba-toggle{position:relative;display:inline-flex;background:#EEF4F5;border:1px solid #DCE6E9;border-radius:999px;padding:4px;cursor:pointer;user-select:none}
+ .ba-opt{position:relative;z-index:1;min-width:80px;text-align:center;padding:6px 18px;font-size:13.5px;font-weight:600;color:#52656C;border-radius:999px;transition:color .2s}
+ .ba-opt.on{color:#06181B}
+ .ba-knob{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);background:#16C0D4;border-radius:999px;transition:transform .3s cubic-bezier(.16,1,.3,1);box-shadow:0 6px 16px -8px rgba(22,192,212,.8)}
+ .ba-toggle.now .ba-knob{transform:translateX(100%)}
+ .ba-cell{background:#fff;border:1px solid #DCE6E9;border-radius:14px;padding:18px 20px;box-shadow:0 1px 2px rgba(14,26,30,.04),0 12px 30px -18px rgba(14,26,30,.12)}
+ .ba-was{color:#8498A0}
+ .ba-now{color:#0E1A1E;font-weight:600}
+ .state-was .ba-now{display:none}
+ .state-now .ba-was{display:none}
+</style>
+</head>
+<body>
+<div class="stage"></div>
+<div class="bg-dot"></div>
+<div class="bgnum" id="bgnum">01</div>
+
+<div class="reveal">
+ <div class="slides">
+
+  <!-- 01 · COVER -->
+  <section data-anim="cover">
+    <div class="eyebrow cv-eye">СИНЕМА · командный центр сети кинотеатров</div>
+    <h1 class="text-[66px] font-bold mt-5 tracking-[-0.03em]">
+      <span class="mask"><span class="cv-line">Вся ваша сеть кинотеатров —</span></span>
+      <span class="mask"><span class="cv-line">в одном <span class="text-acd">центре управления</span>.</span></span>
+    </h1>
+    <p class="text-[19px] text-t2 mt-7 max-w-[760px] cv-sub">AI-командный центр, который собирает данные со всех кинотеатров вашей сети,
+       анализирует их в реальном времени и выдаёт готовые управленческие решения — а не сырые отчёты.</p>
+    <div class="glowline w-[120px] mt-9 cv-glow"></div>
+    <div class="flex items-center gap-7 mt-9 cv-trust text-t3">
+      <div><div class="text-[26px] font-bold num text-ink">19</div><div class="lbl mt-0.5">кинотеатров</div></div>
+      <div class="w-px h-10 bg-line"></div>
+      <div><div class="text-[26px] font-bold num text-ink">5</div><div class="lbl mt-0.5">AI-агентов в работе</div></div>
+      <div class="w-px h-10 bg-line"></div>
+      <div><div class="text-[26px] font-bold num text-ink">08:00</div><div class="lbl mt-0.5">дайджест в Telegram</div></div>
+    </div>
+  </section>
+
+  <!-- 02 · SCALE / CONTEXT -->
+  <section data-anim="scale">
+    <div class="eyebrow anim-up">Сеть кинотеатров сегодня</div>
+    <h2 class="text-[44px] mt-3 anim-up">Большая сеть. Четыре системы. Ноль единой картины.</h2>
+    <div class="grid grid-cols-3 gap-5 mt-10">
+      <div class="anim-up bg-surf border border-line rounded-card p-7 card-sh">
+        <div class="text-[56px] font-bold num leading-none text-ink" data-count="19">19</div>
+        <div class="text-[15px] text-t2 mt-2 font-medium">кинотеатров в вашей сети</div>
+        <div class="mono text-[11.5px] text-t3 mt-1">разные города · ТРЦ, центр, спальные районы</div>
+      </div>
+      <div class="anim-up bg-surf border border-line rounded-card p-7 card-sh">
+        <div class="text-[56px] font-bold num leading-none text-ink"><span data-count="86">86</span></div>
+        <div class="text-[15px] text-t2 mt-2 font-medium">кинозалов под управлением</div>
+        <div class="mono text-[11.5px] text-t3 mt-1">тысячи сеансов каждую неделю</div>
+      </div>
+      <div class="anim-up bg-surf border border-line rounded-card p-7 card-sh">
+        <div class="text-[56px] font-bold num leading-none text-ink" data-count="4">4</div>
+        <div class="text-[15px] text-t2 mt-2 font-medium">источника данных в каждой точке</div>
+        <div class="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-ink">
+          <span class="src"><i class="ph-duotone ph-cash-register text-acd text-[17px]"></i> Касса</span>
+          <span class="src"><i class="ph-duotone ph-users-three text-acd text-[17px]"></i> CRM</span>
+          <span class="src"><i class="ph-duotone ph-coffee text-acd text-[17px]"></i> Бар</span>
+          <span class="src"><i class="ph-duotone ph-package text-acd text-[17px]"></i> Склад</span>
+        </div>
+      </div>
+    </div>
+    <p class="text-[16px] text-t2 mt-8 max-w-[840px] anim-up">Каждая система считает по-своему. Чтобы понять,
+       что происходит в сети <i>сегодня</i>, нужно ждать выгрузки и сводить таблицы вручную. Мы это меняем.</p>
+  </section>
+
+  <!-- 03 · PROBLEM -->
+  <section data-anim="problem">
+    <div class="eyebrow anim-up">Проблема</div>
+    <h2 class="text-[44px] mt-3 max-w-[960px] anim-up">Данные живут в четырёх системах. Решения принимаются вслепую.</h2>
+    <p class="text-[16px] text-t2 mt-4 max-w-[820px] anim-up">Пока вы сводите цифры из 4 систем по 19 точкам — смена уже прошла, а решение опоздало.</p>
+    <div class="grid grid-cols-4 gap-4 mt-9">
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-6 card-sh">
+        <i class="ph-duotone ph-files text-warn text-[26px]"></i>
+        <div class="text-[16px] font-semibold mt-3">Разрозненные данные</div>
+        <div class="text-[13px] text-t2 mt-1.5 leading-snug">4 системы × 19 точек = ручное сведение в Excel</div>
+      </div>
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-6 card-sh">
+        <i class="ph-duotone ph-clock-countdown text-warn text-[26px]"></i>
+        <div class="text-[16px] font-semibold mt-3">Решения с задержкой</div>
+        <div class="text-[13px] text-t2 mt-1.5 leading-snug">отчёт приходит, когда смену уже не вернуть</div>
+      </div>
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-6 card-sh">
+        <i class="ph-duotone ph-eye-slash text-warn text-[26px]"></i>
+        <div class="text-[16px] font-semibold mt-3">Нет единой картины</div>
+        <div class="text-[13px] text-t2 mt-1.5 leading-snug">кто лидер, а кто проседает — неочевидно</div>
+      </div>
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-6 card-sh">
+        <i class="ph-duotone ph-chart-line-down text-warn text-[26px]"></i>
+        <div class="text-[16px] font-semibold mt-3">Упущенная выручка</div>
+        <div class="text-[13px] text-t2 mt-1.5 leading-snug">сетки сеансов и бар работают не на максимум</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · IDEA / brain diagram -->
+  <section data-anim="idea">
+    <div class="eyebrow anim-up">Идея</div>
+    <h2 class="text-[44px] mt-3 anim-up">Что, если у всей сети будет <span class="text-acd">один мозг</span>?</h2>
+    <div class="relative mx-auto mt-6" style="width:1100px;height:400px">
+      <svg class="absolute inset-0" width="1100" height="400" viewBox="0 0 1100 400" style="overflow:visible">
+        <path class="draw cn" d="M190,40  C 320,40  330,162 455,160"></path>
+        <path class="draw cn" d="M190,134 C 320,134 340,186 455,186"></path>
+        <path class="draw cn" d="M190,228 C 320,228 340,214 455,214"></path>
+        <path class="draw cn" d="M190,322 C 320,322 330,240 455,240"></path>
+        <path class="draw dn" d="M645,200 C 760,200 800,76  910,76"></path>
+        <path class="draw dn" d="M645,200 C 760,200 800,200 910,200"></path>
+        <path class="draw dn" d="M645,200 C 760,200 800,324 910,324"></path>
+      </svg>
+      <div class="node nd-s p-3.5" style="left:0;top:6px;width:190px"><div class="src"><i class="ph-duotone ph-cash-register text-acd text-[20px]"></i> Касса</div><div class="mono text-[10.5px] text-t3 mt-1">билеты · возвраты</div></div>
+      <div class="node nd-s p-3.5" style="left:0;top:100px;width:190px"><div class="src"><i class="ph-duotone ph-users-three text-acd text-[20px]"></i> CRM</div><div class="mono text-[10.5px] text-t3 mt-1">база · сегменты</div></div>
+      <div class="node nd-s p-3.5" style="left:0;top:194px;width:190px"><div class="src"><i class="ph-duotone ph-coffee text-acd text-[20px]"></i> Бар</div><div class="mono text-[10.5px] text-t3 mt-1">чек · позиции</div></div>
+      <div class="node nd-s p-3.5" style="left:0;top:288px;width:190px"><div class="src"><i class="ph-duotone ph-package text-acd text-[20px]"></i> Склад</div><div class="mono text-[10.5px] text-t3 mt-1">остатки · списания</div></div>
+
+      <div class="nd-core" style="position:absolute;left:455px;top:140px;width:190px;height:120px">
+        <div class="absolute inset-0 rounded-[16px]" style="background:#0E1A24;color:#fff;overflow:hidden;border:1px solid rgba(22,192,212,.4);box-shadow:0 22px 50px -18px rgba(14,26,36,.5),0 0 50px -14px rgba(22,192,212,.5)">
+          <div class="core-glow" style="position:absolute;inset:-30px;background:radial-gradient(circle,rgba(22,192,212,.4),transparent 60%)"></div>
+          <div class="relative h-full flex flex-col items-center justify-center text-center px-3">
+            <div class="lbl" style="color:#38D4E6">AI-ядро</div>
+            <div class="flex -space-x-1.5 mt-2.5">
+              <span class="w-7 h-7 rounded-full bg-white/10 border border-white/15 grid place-items-center" style="color:#38D4E6"><i class="ph ph-gauge text-[13px]"></i></span>
+              <span class="w-7 h-7 rounded-full bg-white/10 border border-white/15 grid place-items-center" style="color:#38D4E6"><i class="ph ph-ticket text-[13px]"></i></span>
+              <span class="w-7 h-7 rounded-full bg-white/10 border border-white/15 grid place-items-center" style="color:#38D4E6"><i class="ph ph-megaphone text-[13px]"></i></span>
+              <span class="w-7 h-7 rounded-full bg-white/10 border border-white/15 grid place-items-center" style="color:#38D4E6"><i class="ph ph-chart-pie-slice text-[13px]"></i></span>
+              <span class="w-7 h-7 rounded-full bg-white/10 border border-white/15 grid place-items-center" style="color:#38D4E6"><i class="ph ph-scales text-[13px]"></i></span>
+            </div>
+            <div class="text-[11.5px] text-white/65 mt-2.5 leading-tight">5 агентов<br>на Claude</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="node nd-o p-3.5" style="left:910px;top:36px;width:190px"><div class="src"><i class="ph-duotone ph-squares-four text-pos text-[20px]"></i> Живой дашборд</div></div>
+      <div class="node nd-o p-3.5" style="left:910px;top:160px;width:190px"><div class="src"><i class="ph-duotone ph-lightbulb text-pos text-[20px]"></i> Готовые решения</div></div>
+      <div class="node nd-o p-3.5" style="left:910px;top:284px;width:190px"><div class="src"><i class="ph-duotone ph-sun-horizon text-pos text-[20px]"></i> Дайджест · алерты</div></div>
+    </div>
+  </section>
+
+  <!-- 05 · SOLUTION (мультиагентная система + dashboard) -->
+  <section data-anim="solution">
+    <div class="eyebrow anim-up">Решение · система</div>
+    <h2 class="text-[42px] mt-3 anim-up">Мультиагентная система СИНЕМА.</h2>
+    <div class="grid grid-cols-[.82fr_1.18fr] gap-9 mt-8 items-center">
+      <div class="space-y-6">
+        <div class="anim-up"><div class="lbl text-t3">Доступ</div><div class="text-[27px] font-bold mt-1 text-ink">Веб-панель сети</div><div class="text-[13.5px] text-t2 mt-0.5">онлайн · с любого устройства</div></div>
+        <div class="anim-up"><div class="lbl text-t3">Данные</div><div class="text-[36px] font-bold num mt-1 text-ink" data-count="2.4" data-dec="1" data-suf=" млн">2.4 млн</div><div class="text-[13.5px] text-t2 mt-0.5">билетов · сеть кинотеатров</div></div>
+        <div class="anim-up"><div class="lbl text-t3">Агенты</div><div class="text-[36px] font-bold num mt-1 text-ink">24 / 7</div><div class="text-[13.5px] text-t2 mt-0.5">анализ → решение → действие</div></div>
+      </div>
+
+      <!-- dark dashboard screenshot -->
+      <div class="dk p-4 anim-up">
+        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+          <div class="flex items-center gap-2 text-[12px] font-semibold"><span class="logo !w-5 !h-5 !rounded-[6px]"><i class="ph-fill ph-play text-white text-[10px] ml-px"></i></span> СИНЕМА · Обзор</div>
+          <div class="flex items-center gap-1.5 dlbl"><span class="w-1.5 h-1.5 rounded-full" style="background:#3BD18A"></span> 19 онлайн</div>
+        </div>
+        <div class="grid grid-cols-[1.4fr_1fr] gap-3 mt-3">
+          <div class="dk-cell p-3">
+            <div class="flex items-end justify-between">
+              <div><div class="dlbl">Выручка · месяц</div><div class="text-[26px] font-bold num mt-0.5" data-count="138" data-pre="₽" data-suf=" млн">₽138 млн</div></div>
+              <div class="text-right text-[11px] num"><div style="color:#3BD18A">▲ 7.8%</div><div class="dsub">к плану 92%</div></div>
+            </div>
+            <svg id="solBars" class="w-full mt-3" height="92" viewBox="0 0 320 92" preserveAspectRatio="none"></svg>
+          </div>
+          <div class="dk-cell p-3 flex flex-col items-center justify-center">
+            <div class="dlbl self-start">Загрузка сети</div>
+            <div class="relative mt-1" style="width:104px;height:104px">
+              <svg width="104" height="104" viewBox="0 0 104 104">
+                <circle cx="52" cy="52" r="44" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="9"/>
+                <circle id="solGauge" cx="52" cy="52" r="44" fill="none" stroke="#16C0D4" stroke-width="9" stroke-linecap="round" transform="rotate(-90 52 52)"/>
+              </svg>
+              <div class="absolute inset-0 grid place-items-center"><div class="text-[27px] font-bold num" id="solGaugeNum" data-count="71" data-suf="%">71%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="dk-cell p-3 mt-3">
+          <div class="flex items-center justify-between"><div class="dlbl">Рейтинг сети · топ и аутсайдер</div><div class="dlbl">Δ к ср.</div></div>
+          <div class="mt-2 space-y-1.5">
+            <div class="flex items-center gap-2 text-[12px]"><span class="mono font-bold text-[11px] w-4" style="color:#38D4E6">1</span><span class="flex-1">Флагман</span><span class="num font-semibold" style="color:#3BD18A">+14%</span></div>
+            <div class="flex items-center gap-2 text-[12px]"><span class="mono font-bold text-[11px] w-4 dsub">2</span><span class="flex-1">ТРЦ «Галерея»</span><span class="num font-semibold" style="color:#3BD18A">+9%</span></div>
+            <div class="flex items-center gap-2 text-[12px]"><span class="mono font-bold text-[11px] w-4 dsub">3</span><span class="flex-1">Сити-Молл</span><span class="num font-semibold" style="color:#3BD18A">+6%</span></div>
+            <div class="flex items-center gap-2 text-[12px]"><span class="mono font-bold text-[11px] w-4" style="color:#F2655A">19</span><span class="flex-1 dsub">Окраина</span><span class="num font-semibold" style="color:#F2655A">−8%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05b · ARCHITECTURE -->
+  <section data-anim="architecture">
+    <div class="eyebrow anim-up">Архитектура · один организм</div>
+    <h2 class="text-[42px] mt-3 anim-up">Супер-панель → 19 панелей → роли.</h2>
+    <div class="grid grid-cols-[1.5fr_.78fr] gap-9 mt-7 items-start">
+      <div>
+        <div class="anim-up dk p-4 flex items-center justify-between">
+          <div class="flex items-center gap-2.5"><span class="logo !w-7 !h-7"><i class="ph-fill ph-play text-white text-[12px] ml-px"></i></span><div><div class="text-[15px] font-bold">Супер-панель сети</div><div class="dlbl">свод всех 19 кинотеатров</div></div></div>
+          <div class="text-right num"><div class="text-[17px] font-bold">₽138 млн</div><div class="dsub text-[10.5px]">выручка · месяц</div></div>
+        </div>
+        <div class="flex justify-center"><div class="w-px h-4 bg-line"></div></div>
+        <div class="lbl text-t3 text-center mb-2">19 панелей · по кинотеатру</div>
+        <div id="archTiles" class="flex gap-1.5 justify-center flex-wrap"></div>
+        <div class="flex justify-center mt-1.5"><i class="ph-bold ph-caret-down text-t3 text-[13px]"></i></div>
+        <div class="bg-surf border border-line rounded-card p-4 card-sh mt-1.5 anim-up">
+          <div class="flex items-center justify-between">
+            <div class="text-[14px] font-semibold">Личный кабинет · «Флагман»</div>
+            <span class="mono text-[10.5px] text-acd border border-ac/40 rounded-full px-2 py-0.5">роли и доступы</span>
+          </div>
+          <div class="mt-3 flex items-center gap-2 flex-wrap text-[12.5px]">
+            <span class="bg-act text-acd font-semibold rounded-lg px-3 py-1.5">Директор кинотеатра</span>
+            <i class="ph-bold ph-arrow-right text-t3 text-[12px]"></i>
+            <span class="border border-line rounded-lg px-3 py-1.5">Управляющий баром</span>
+            <span class="border border-line rounded-lg px-3 py-1.5">Маркетолог точки</span>
+            <span class="border border-line rounded-lg px-3 py-1.5">Ст. кассир</span>
+          </div>
+          <div class="text-[12px] text-t3 mt-2.5">У каждой роли — свой доступ и свои данные. Владелец сети видит все 19 кабинетов.</div>
+        </div>
+      </div>
+      <div class="space-y-3">
+        <div class="fragment fade-up bg-surf border border-line rounded-card p-5 card-sh"><div class="flex items-center gap-2.5"><span class="w-9 h-9 rounded-[10px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-squares-four text-[18px]"></i></span><div class="text-[15px] font-bold">19 → 1</div></div><p class="text-[13px] text-t2 mt-2 leading-snug">19 панелей сводятся в одну супер-панель сети — и из неё можно провалиться в любую точку.</p></div>
+        <div class="fragment fade-up bg-surf border border-line rounded-card p-5 card-sh"><div class="flex items-center gap-2.5"><span class="w-9 h-9 rounded-[10px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-tree-structure text-[18px]"></i></span><div class="text-[15px] font-bold">Роли и доступы</div></div><p class="text-[13px] text-t2 mt-2 leading-snug">Владелец → директор точки → его команда. Каждый видит ровно своё.</p></div>
+        <div class="fragment fade-up bg-surf border border-line rounded-card p-5 card-sh"><div class="flex items-center gap-2.5"><span class="w-9 h-9 rounded-[10px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-funnel text-[18px]"></i></span><div class="text-[15px] font-bold">Любой срез</div></div><p class="text-[13px] text-t2 mt-2 leading-snug">Напр. 19 баров — каждый отдельно. Любые интеграции: касса, CRM, бар, склад, 1С.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · METRICS -->
+  <section data-anim="metrics">
+    <div class="eyebrow anim-up">Метрики · что мы видим</div>
+    <h2 class="text-[42px] mt-3 anim-up">Показатели, которые мы анализируем.</h2>
+    <div class="grid grid-cols-4 gap-3 mt-7">
+      <div class="dk p-3 anim-up"><div class="dlbl">Ср. цена билета, ₽</div><svg class="w-full mt-2 mc" height="64" viewBox="0 0 240 64" preserveAspectRatio="none"><path class="draw mcl" d="M0 48 C 40 46 70 50 110 40 C 150 30 180 18 240 12" stroke="#16C0D4"></path></svg></div>
+      <div class="dk p-3 anim-up"><div class="dlbl">Зрители / день</div><svg class="w-full mt-2 mc" height="64" viewBox="0 0 240 64" preserveAspectRatio="none"><path class="draw mcl" d="M0 50 C 40 44 70 48 110 34 C 150 24 190 26 240 16" stroke="#16C0D4"></path></svg></div>
+      <div class="dk p-3 anim-up"><div class="dlbl">Доля рынка, %</div><svg class="w-full mt-2 mc" height="64" viewBox="0 0 240 64" preserveAspectRatio="none"><path class="draw mcl" d="M0 40 C 30 24 60 24 90 40 C 120 56 150 56 180 38 C 205 24 225 28 240 22" stroke="#D9A441"></path></svg></div>
+      <div class="dk p-3 anim-up"><div class="dlbl">Фудкост бар, %</div><svg class="w-full mt-2 mc" height="64" viewBox="0 0 240 64" preserveAspectRatio="none"><path class="draw mcl" d="M0 30 C 30 22 60 18 90 26 C 120 34 150 48 180 44 C 210 40 225 48 240 50" stroke="#D9A441"></path></svg></div>
+    </div>
+    <div class="grid grid-cols-4 gap-x-8 gap-y-2 mt-8">
+      <div class="anim-up"><div class="lbl text-acd pb-2 mb-2 border-b border-line">Выручка</div><div class="space-y-1.5 text-[14px] text-t2">
+        <div>Кино</div><div>Бар</div><div>Зрители</div><div>Ср. билет</div><div>Перкап</div></div></div>
+      <div class="anim-up"><div class="lbl text-acd pb-2 mb-2 border-b border-line">P&amp;L</div><div class="space-y-1.5 text-[14px] text-t2">
+        <div>План vs Факт</div><div>Фудкост %</div><div>Labour Cost</div><div>Оборачиваемость склада</div></div></div>
+      <div class="anim-up"><div class="lbl text-acd pb-2 mb-2 border-b border-line">Сеть</div><div class="space-y-1.5 text-[14px] text-t2">
+        <div>LFL-сеть</div><div>Когорты</div><div>Рейтинг по KPI</div><div>Лидер / аутсайдер</div></div></div>
+      <div class="anim-up"><div class="lbl text-acd pb-2 mb-2 border-b border-line">Эффект</div><div class="space-y-1.5 text-[14px]">
+        <div class="font-semibold text-ink">Доля → зрители</div><div class="font-semibold text-ink">Доля → выручка</div><div class="text-t2">Кино vs Бар</div><div class="text-t2">YoY и YTD</div></div></div>
+    </div>
+  </section>
+
+  <!-- 07 · AGENTS — Опердир -->
+  <section data-anim="agents1">
+    <div class="eyebrow anim-up">Агенты · в работе</div>
+    <h2 class="text-[44px] mt-3 anim-up">Команда из пяти директоров, которая не спит.</h2>
+    <div class="grid grid-cols-[1.15fr_.85fr] gap-6 mt-9">
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-7 card-sh">
+        <div class="flex items-center justify-between">
+          <span class="w-12 h-12 rounded-[13px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-gauge text-[25px]"></i></span>
+          <span class="lbl text-t3">Агент 01</span>
+        </div>
+        <div class="text-[22px] font-bold mt-4">Операционный директор</div>
+        <p class="text-[14.5px] text-t2 leading-relaxed mt-2">В реальном времени отслеживает загрузку залов и нагрузку сети, оптимизирует распределение персонала и задач между точками.</p>
+        <div class="flex flex-wrap gap-2 mt-4">
+          <span class="mono text-[11px] text-t2 border border-line rounded-full px-3 py-1">посещаемость</span>
+          <span class="mono text-[11px] text-t2 border border-line rounded-full px-3 py-1">загрузка залов</span>
+          <span class="mono text-[11px] text-t2 border border-line rounded-full px-3 py-1">ср. чек</span>
+          <span class="mono text-[11px] text-t2 border border-line rounded-full px-3 py-1">конверсия</span>
+        </div>
+      </div>
+      <div class="fragment fade-up rounded-card p-7 flex flex-col justify-center" style="background:linear-gradient(160deg,#E4F5F7,#F2FBFC);border:1px solid rgba(22,192,212,.3)">
+        <div class="flex items-center gap-2 eyebrow mb-2"><i class="ph-fill ph-sparkle"></i> Пример решения</div>
+        <div class="text-[18px] font-semibold leading-snug text-ink">«Флагман»: вечерняя загрузка 94% — добавьте кассира на 18:00–22:00 и перераспределите нагрузку с «Сити-Молл».</div>
+        <div class="mono text-[12px] text-acd mt-4">→ не отчёт. Конкретное действие.</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-3 mt-7 anim-up text-t3">
+      <span class="lbl">Остальные четыре →</span>
+      <span class="w-8 h-8 rounded-full bg-elev grid place-items-center text-acd"><i class="ph-bold ph-ticket"></i></span>
+      <span class="w-8 h-8 rounded-full bg-elev grid place-items-center text-acd"><i class="ph-bold ph-megaphone"></i></span>
+      <span class="w-8 h-8 rounded-full bg-elev grid place-items-center text-acd"><i class="ph-bold ph-chart-pie-slice"></i></span>
+      <span class="w-8 h-8 rounded-full bg-elev grid place-items-center text-acd"><i class="ph-bold ph-scales"></i></span>
+    </div>
+  </section>
+
+  <!-- 08 · AGENTS 02-05 -->
+  <section data-anim="agents2">
+    <div class="eyebrow anim-up">Агенты 02–05</div>
+    <h2 class="text-[40px] mt-3 anim-up">Каждый отвечает за свой срез сети.</h2>
+    <div class="grid grid-cols-2 gap-5 mt-8">
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-6 card-sh">
+        <div class="flex items-center gap-3.5"><span class="w-11 h-11 rounded-[12px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-ticket text-[21px]"></i></span><div><div class="text-[18px] font-bold leading-tight">Букер</div><div class="lbl text-t3 mt-0.5">Агент 02 · репертуар</div></div></div>
+        <p class="text-[14px] text-t2 leading-relaxed mt-3">Анализирует фильмы, сборы, время показа и заполняемость — рекомендует сетки сеансов под реальный спрос ваших зрителей.</p>
+        <div class="mono text-[12px] text-acd mt-3">→ перенести утренний сеанс в «Сити-Молл» на 11:30 · спрос +18%</div>
+      </div>
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-6 card-sh">
+        <div class="flex items-center gap-3.5"><span class="w-11 h-11 rounded-[12px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-megaphone text-[20px]"></i></span><div><div class="text-[18px] font-bold leading-tight">Маркетолог</div><div class="lbl text-t3 mt-0.5">Агент 03 · клиенты</div></div></div>
+        <p class="text-[14px] text-t2 leading-relaxed mt-3">CRM, RFM-сегменты, возвратность. Сам запускает кампании в email / SMS / Telegram / push и считает их отдачу.</p>
+        <div class="mono text-[12px] text-acd mt-3">→ вернуть «спящих» зрителей акцией на вторник</div>
+      </div>
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-6 card-sh">
+        <div class="flex items-center gap-3.5"><span class="w-11 h-11 rounded-[12px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-chart-pie-slice text-[20px]"></i></span><div><div class="text-[18px] font-bold leading-tight">Финансовый директор</div><div class="lbl text-t3 mt-0.5">Агент 04 · деньги</div></div></div>
+        <p class="text-[14px] text-t2 leading-relaxed mt-3">Прибыль, расходы, отклонения от плана. Формирует P&amp;L и прогноз по месяцу и кварталу для всей сети.</p>
+        <div class="mono text-[12px] text-acd mt-3">→ маржа бара в «Окраине» ниже сети на 6 п.п.</div>
+      </div>
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-6 card-sh">
+        <div class="flex items-center gap-3.5"><span class="w-11 h-11 rounded-[12px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-scales text-[20px]"></i></span><div><div class="text-[18px] font-bold leading-tight">Юрист</div><div class="lbl text-t3 mt-0.5">Агент 05 · договоры</div></div></div>
+        <p class="text-[14px] text-t2 leading-relaxed mt-3">Аренда, контракты, соглашения с прокатчиками. Подсвечивает риски, сроки и спорные пункты до того, как они станут проблемой.</p>
+        <div class="mono text-[12px] text-acd mt-3">→ аренда «Сити-Молл» истекает через 45 дней</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 · MORE AGENTS (roadmap) -->
+  <section data-anim="vector">
+    <div class="eyebrow anim-up">Вектор · бригада растёт</div>
+    <h2 class="text-[44px] mt-3 anim-up">Агентов — больше.</h2>
+    <div class="grid grid-cols-[.62fr_1.38fr] gap-9 mt-8">
+      <div class="anim-up">
+        <div class="lbl text-t3 mb-3">Сейчас в работе</div>
+        <div class="space-y-2.5">
+          <div class="flex items-center gap-2.5 text-[16px] font-semibold"><span class="w-2 h-2 rounded-full bg-ac"></span> Опер. директор</div>
+          <div class="flex items-center gap-2.5 text-[16px] font-semibold"><span class="w-2 h-2 rounded-full bg-ac"></span> Букер</div>
+          <div class="flex items-center gap-2.5 text-[16px] font-semibold"><span class="w-2 h-2 rounded-full bg-ac"></span> Маркетолог</div>
+          <div class="flex items-center gap-2.5 text-[16px] font-semibold"><span class="w-2 h-2 rounded-full bg-ac"></span> Юрист</div>
+          <div class="flex items-center gap-2.5 text-[16px] font-semibold"><span class="w-2 h-2 rounded-full bg-ac"></span> Фин. директор</div>
+        </div>
+      </div>
+      <div>
+        <div class="lbl text-t3 mb-3 anim-up">В планах</div>
+        <div class="grid grid-cols-4 gap-3">
+          <div class="fragment fade-up bg-surf border border-line rounded-card p-4 card-sh"><i class="ph-duotone ph-binoculars text-acd text-[20px]"></i><div class="text-[14px] font-semibold mt-2">Разведчик</div><div class="text-[11.5px] text-t3 mt-0.5 leading-snug">мониторинг конкурентов</div></div>
+          <div class="fragment fade-up bg-surf border border-line rounded-card p-4 card-sh"><i class="ph-duotone ph-bell-ringing text-acd text-[20px]"></i><div class="text-[14px] font-semibold mt-2">Alert-система</div><div class="text-[11.5px] text-t3 mt-0.5 leading-snug">KPI вышел за норму — пуш</div></div>
+          <div class="fragment fade-up bg-surf border border-line rounded-card p-4 card-sh"><i class="ph-duotone ph-newspaper text-acd text-[20px]"></i><div class="text-[14px] font-semibold mt-2">PR-агент</div><div class="text-[11.5px] text-t3 mt-0.5 leading-snug">мониторинг СМИ и онлайна</div></div>
+          <div class="fragment fade-up bg-surf border border-line rounded-card p-4 card-sh"><i class="ph-duotone ph-graduation-cap text-acd text-[20px]"></i><div class="text-[14px] font-semibold mt-2">Образовательный</div><div class="text-[11.5px] text-t3 mt-0.5 leading-snug">корпоративная база знаний</div></div>
+          <div class="fragment fade-up bg-surf border border-line rounded-card p-4 card-sh"><i class="ph-duotone ph-user-plus text-acd text-[20px]"></i><div class="text-[14px] font-semibold mt-2">HR-рекрутер</div><div class="text-[11.5px] text-t3 mt-0.5 leading-snug">подбор персонала</div></div>
+          <div class="fragment fade-up bg-surf border border-line rounded-card p-4 card-sh"><i class="ph-duotone ph-share-network text-acd text-[20px]"></i><div class="text-[14px] font-semibold mt-2">SMM-агент</div><div class="text-[11.5px] text-t3 mt-0.5 leading-snug">контент-план и публикации</div></div>
+          <div class="fragment fade-up bg-surf border border-line rounded-card p-4 card-sh"><i class="ph-duotone ph-wrench text-acd text-[20px]"></i><div class="text-[14px] font-semibold mt-2">Технический</div><div class="text-[11.5px] text-t3 mt-0.5 leading-snug">состояние объектов</div></div>
+          <div class="fragment fade-up bg-surf border border-line rounded-card p-4 card-sh"><i class="ph-duotone ph-shopping-cart text-acd text-[20px]"></i><div class="text-[14px] font-semibold mt-2">Закупки</div><div class="text-[11.5px] text-t3 mt-0.5 leading-snug">управление поставщиками</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 · DIGEST -->
+  <section data-anim="digest">
+    <div class="grid grid-cols-[1.05fr_.95fr] gap-14 items-center">
+      <div>
+        <div class="eyebrow anim-up">Автоматизация · 08:00 каждый день</div>
+        <h2 class="text-[42px] mt-3 anim-up">Утренний дайджест вам — без единого клика.</h2>
+        <p class="text-[16.5px] text-t2 leading-relaxed mt-5 anim-up">Каждое утро система присылает свод за вчера: выручка, лидеры и аутсайдеры сети,
+           рекомендации всех агентов. В Telegram — текстом и голосом, плюс PDF с KPI, графиками и прогнозом.</p>
+        <div class="flex flex-wrap gap-3 mt-7">
+          <span class="chip fragment fade-up"><i class="ph-fill ph-telegram-logo text-acd text-[16px]"></i> Telegram</span>
+          <span class="chip fragment fade-up"><i class="ph-bold ph-file-pdf text-acd text-[16px]"></i> PDF-отчёт</span>
+          <span class="chip fragment fade-up"><i class="ph-bold ph-waveform text-acd text-[16px]"></i> Голосовая сводка</span>
+        </div>
+      </div>
+      <div class="bg-surf border border-line rounded-card p-6 max-w-[430px] ml-auto card-sh">
+        <div class="flex items-center gap-2.5 pb-3.5 border-b border-line"><span class="logo !w-9 !h-9"><i class="ph-fill ph-play text-white text-[14px] ml-0.5"></i></span><div><div class="text-[14px] font-semibold">СИНЕМА · Дайджест</div><div class="mono text-[11px] text-t3">сегодня, 08:00</div></div></div>
+        <div class="text-[14px] leading-relaxed mt-4 space-y-3">
+          <div class="fragment fade-up">☀️ <b>Доброе утро!</b> Сводка по сети за вчера:</div>
+          <div class="fragment fade-up bg-elev rounded-[11px] p-3.5 num"><div class="flex justify-between"><span class="text-t2">Выручка сети</span><b>₽4.61М</b></div><div class="flex justify-between mt-1.5"><span class="text-t2">Гости</span><b>13 640</b></div><div class="flex justify-between mt-1.5"><span class="text-t2">Загрузка</span><b class="text-acd">71%</b></div></div>
+          <div class="fragment fade-up">🏆 Лидер: <b>Флагман</b> (+14%) · 📉 Аутсайдер: <b>Окраина</b> (−8%)</div>
+          <div class="fragment fade-up bg-act border border-line rounded-[11px] p-3.5"><span class="text-acd font-semibold">2 рекомендации агентов:</span> усилить вечер во «Флагмане», перенести утро в «Сити-Молл».</div>
+          <div class="fragment fade-up flex items-center gap-2 text-acd mono text-[12px] pt-1"><i class="ph-fill ph-play-circle text-[20px]"></i> Голосовая сводка · 0:48</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 · NETWORK MAP -->
+  <section data-anim="map">
+    <div class="flex items-end justify-between anim-up">
+      <div><div class="eyebrow">Сеть · на связи</div><h2 class="text-[42px] mt-3">Все 19 кинотеатров — в реальном времени.</h2></div>
+      <div class="flex items-center gap-2 text-[14px] text-t2"><span class="w-2.5 h-2.5 rounded-full bg-pos" style="box-shadow:0 0 10px #16A34A"></span> <span class="num"><b class="text-ink" data-count="19">19</b></span>/19 онлайн</div>
+    </div>
+    <div class="relative mx-auto mt-3" style="width:1080px;height:430px">
+      <svg id="netmap" class="absolute inset-0" width="1080" height="430" viewBox="0 0 1080 430" style="overflow:visible">
+        <g id="netEdges"></g><g id="netPins"></g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 12 · VALUE -->
+  <section data-anim="value">
+    <div class="eyebrow anim-up">Итог · что это даёт</div>
+    <h2 class="text-[44px] mt-3 anim-up">Не дашборд ради дашборда — управляемость сети.</h2>
+    <div class="grid grid-cols-3 gap-5 mt-11">
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-7 card-sh">
+        <span class="w-12 h-12 rounded-[13px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-eye text-[24px]"></i></span>
+        <div class="text-[19px] font-bold mt-4">Единая картина</div>
+        <p class="text-[14px] text-t2 leading-relaxed mt-2">Все 19 точек и 4 системы — в реальном времени, на одном экране. Без выгрузок и ручных таблиц.</p>
+      </div>
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-7 card-sh">
+        <span class="w-12 h-12 rounded-[13px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-lightning text-[24px]"></i></span>
+        <div class="text-[19px] font-bold mt-4">Решения, а не отчёты</div>
+        <p class="text-[14px] text-t2 leading-relaxed mt-2">Агенты говорят, что именно сделать сегодня — и пока смена не прошла, а не задним числом.</p>
+      </div>
+      <div class="fragment fade-up bg-surf border border-line rounded-card p-7 card-sh">
+        <span class="w-12 h-12 rounded-[13px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-trend-up text-[24px]"></i></span>
+        <div class="text-[19px] font-bold mt-4">Рост выручки и маржи</div>
+        <p class="text-[14px] text-t2 leading-relaxed mt-2">Оптимизированные сетки сеансов, бар и персонал — каждая точка работает на свой максимум.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12b · SHIFT (было → стало) -->
+  <section data-anim="shift">
+    <div class="eyebrow anim-up">Главное · трансформация</div>
+    <h2 class="text-[42px] mt-3 anim-up">Раньше сводили сами. Теперь считает <span class="text-acd">машина</span>.</h2>
+    <div class="flex items-center gap-3 mt-6 anim-up">
+      <div class="ba-toggle" id="baToggle">
+        <span class="ba-opt on" data-s="was">Было</span>
+        <span class="ba-opt" data-s="now">Стало</span>
+        <span class="ba-knob"></span>
+      </div>
+      <span class="text-[12.5px] text-t3 mono">«Далее» → стало · «Назад» → было</span>
+      <span class="fragment ba-frag" aria-hidden="true" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none"></span>
+    </div>
+    <div id="baRows" class="state-was grid grid-cols-2 gap-x-9 gap-y-4 mt-8 max-w-[1040px]">
+      <div class="ba-cell">
+        <div class="flex items-center gap-2.5 text-t2"><span class="w-8 h-8 rounded-[9px] bg-elev grid place-items-center text-acd"><i class="ph-bold ph-files text-[17px]"></i></span><span class="lbl">Сбор данных</span></div>
+        <div class="text-[16px] mt-2.5 leading-snug"><span class="ba-was">вручную из 4 систем, выгрузки в Excel</span><span class="ba-now"><i class="ph-bold ph-check text-acd text-[14px] mr-1 align-middle"></i>автоматически, в реальном времени</span></div>
+      </div>
+      <div class="ba-cell">
+        <div class="flex items-center gap-2.5 text-t2"><span class="w-8 h-8 rounded-[9px] bg-elev grid place-items-center text-acd"><i class="ph-bold ph-clock-countdown text-[17px]"></i></span><span class="lbl">Скорость решения</span></div>
+        <div class="text-[16px] mt-2.5 leading-snug"><span class="ba-was">отчёт задним числом — через дни</span><span class="ba-now"><i class="ph-bold ph-check text-acd text-[14px] mr-1 align-middle"></i>в течение смены — за секунды</span></div>
+      </div>
+      <div class="ba-cell">
+        <div class="flex items-center gap-2.5 text-t2"><span class="w-8 h-8 rounded-[9px] bg-elev grid place-items-center text-acd"><i class="ph-bold ph-squares-four text-[17px]"></i></span><span class="lbl">Картина сети</span></div>
+        <div class="text-[16px] mt-2.5 leading-snug"><span class="ba-was">19 точек в разрозненных таблицах</span><span class="ba-now"><i class="ph-bold ph-check text-acd text-[14px] mr-1 align-middle"></i>вся сеть на одном экране</span></div>
+      </div>
+      <div class="ba-cell">
+        <div class="flex items-center gap-2.5 text-t2"><span class="w-8 h-8 rounded-[9px] bg-elev grid place-items-center text-acd"><i class="ph-bold ph-user-gear text-[17px]"></i></span><span class="lbl">Кто это делает</span></div>
+        <div class="text-[16px] mt-2.5 leading-snug"><span class="ba-was">люди вручную, по ночам и выходным</span><span class="ba-now"><i class="ph-bold ph-check text-acd text-[14px] mr-1 align-middle"></i>5 AI-агентов, 24/7/365</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12c · UNIVERSAL -->
+  <section data-anim="universal">
+    <div class="eyebrow anim-up">Масштаб · не только кино</div>
+    <h2 class="text-[42px] mt-3 anim-up">Система универсальная — под любую сеть точек.</h2>
+    <p class="text-[16px] text-t2 mt-4 max-w-[880px] anim-up">СИНЕМА — это движок управления сетью. Кинотеатры — лишь первое применение: та же архитектура (супер-панель → точки → роли → AI-агенты) работает для любого сетевого бизнеса.</p>
+    <div class="grid grid-cols-4 gap-3.5 mt-8">
+      <div class="anim-up bg-surf border border-line rounded-card p-5 card-sh flex items-center gap-3"><span class="w-10 h-10 rounded-[11px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-fork-knife text-[20px]"></i></span><div class="text-[15px] font-semibold">Рестораны и кафе</div></div>
+      <div class="anim-up bg-surf border border-line rounded-card p-5 card-sh flex items-center gap-3"><span class="w-10 h-10 rounded-[11px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-barbell text-[20px]"></i></span><div class="text-[15px] font-semibold">Фитнес-клубы</div></div>
+      <div class="anim-up bg-surf border border-line rounded-card p-5 card-sh flex items-center gap-3"><span class="w-10 h-10 rounded-[11px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-shopping-bag text-[20px]"></i></span><div class="text-[15px] font-semibold">Розничные сети</div></div>
+      <div class="anim-up bg-surf border border-line rounded-card p-5 card-sh flex items-center gap-3"><span class="w-10 h-10 rounded-[11px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-coffee text-[20px]"></i></span><div class="text-[15px] font-semibold">Кофейни</div></div>
+      <div class="anim-up bg-surf border border-line rounded-card p-5 card-sh flex items-center gap-3"><span class="w-10 h-10 rounded-[11px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-gas-pump text-[20px]"></i></span><div class="text-[15px] font-semibold">АЗС и ритейл</div></div>
+      <div class="anim-up bg-surf border border-line rounded-card p-5 card-sh flex items-center gap-3"><span class="w-10 h-10 rounded-[11px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-first-aid-kit text-[20px]"></i></span><div class="text-[15px] font-semibold">Аптеки и клиники</div></div>
+      <div class="anim-up bg-surf border border-line rounded-card p-5 card-sh flex items-center gap-3"><span class="w-10 h-10 rounded-[11px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-scissors text-[20px]"></i></span><div class="text-[15px] font-semibold">Салоны красоты</div></div>
+      <div class="anim-up bg-surf border border-line rounded-card p-5 card-sh flex items-center gap-3"><span class="w-10 h-10 rounded-[11px] bg-act text-acd grid place-items-center"><i class="ph-bold ph-bed text-[20px]"></i></span><div class="text-[15px] font-semibold">Отели</div></div>
+    </div>
+    <p class="text-[13px] text-t3 mono mt-7 anim-up">Источники данных и набор агентов настраиваются под отрасль — каркас остаётся один.</p>
+  </section>
+
+  <!-- 13 · FINALE -->
+  <section data-anim="finale" style="text-align:center">
+    <div class="eyebrow fl-eye">СИНЕМА · итог</div>
+    <h2 class="text-[58px] font-bold mt-5 tracking-[-0.03em]" style="line-height:1.1">
+      <span class="mask"><span class="fl-line">Вся сеть — на одном экране.</span></span>
+      <span class="mask"><span class="fl-line">Решения, <span class="text-acd">а не отчёты</span>.</span></span>
+      <span class="mask"><span class="fl-line">Каждое утро — сама.</span></span>
+    </h2>
+    <div class="glowline w-[140px] mx-auto mt-8 fl-glow"></div>
+    <div class="flex items-center justify-center gap-14 mt-9 fl-stats text-t3">
+      <div class="text-center"><div class="text-[30px] font-bold num text-ink" data-count="19">19</div><div class="lbl mt-0.5">кинотеатров</div></div>
+      <div class="text-center"><div class="text-[30px] font-bold num text-ink" data-count="5">5</div><div class="lbl mt-0.5">AI-агентов</div></div>
+      <div class="text-center"><div class="text-[30px] font-bold num text-ink">24/7/365</div><div class="lbl mt-0.5">работает постоянно</div></div>
+    </div>
+    <div class="text-[16px] text-t2 mt-9 fl-fwd">Запустим командный центр на данных вашей сети — за три недели.</div>
+    <div class="flex items-center justify-center gap-2.5 mt-12 fl-logo">
+      <span class="logo !w-9 !h-9"><i class="ph-fill ph-play text-white text-[14px] ml-0.5"></i></span>
+      <div class="text-left"><div class="text-[15px] font-bold">СИНЕМА</div><div class="mono text-[11px] text-t3">AI-командный центр сети</div></div>
+    </div>
+  </section>
+
+ </div>
+</div>
+
+<!-- chrome -->
+<div class="topbar">
+  <div class="tb-left"><span class="logo !w-7 !h-7"><i class="ph-fill ph-play text-white text-[12px] ml-px"></i></span> СИНЕМА <span class="eyebrow">AI</span></div>
+  <div class="tb-right" id="tbSection">Обложка</div>
+</div>
+<div class="footbar">
+  <div class="fb-side">СИНЕМА · 2026</div>
+  <div class="fb-tag" id="fbTag"></div>
+  <div class="fb-side fb-num"><b id="fbNum">01</b> / 13</div>
+</div>
+
+<div class="navbar">
+  <button class="nbtn" id="prevBtn" aria-label="Назад"><i class="ph-bold ph-arrow-left"></i></button>
+  <div class="nmeta"><span class="mono"><b id="curNum">01</b>/<span id="totNum">13</span></span> · <b id="slLabel">Обложка</b></div>
+  <div class="dots" id="dots"></div>
+  <button class="nbtn primary" id="nextBtn">Далее <i class="ph-bold ph-arrow-right"></i></button>
+</div>
+<div class="grain"></div>
+
+<script>
+(function(){
+  const LABELS=['Обложка','Контекст','Проблема','Идея','Решение','Архитектура','Метрики','Агент 01','Агенты 02–05','Вектор','Дайджест','Карта сети','Ценность','Было → Стало','Универсально','Финал'];
+  const SECTIONS=['Обложка','Контекст','Проблема','Идея','Решение','Архитектура','Метрики','Агенты','Агенты','Вектор','Автоматизация','Сеть','Итог','Трансформация','Масштаб','Финал'];
+  const TAGLINES=[
+    'Все 19 кинотеатров — в одном центре управления.',
+    'Большая сеть, четыре системы, ноль единой картины.',
+    'Данные разрознены — решения опаздывают.',
+    'Один мозг видит всю сеть целиком.',
+    'Все агенты — в одном месте. Нужные цифры — в одно касание.',
+    'Не винегрет, а организм: куда ни ткни — всё разобрано.',
+    'Считаем только то, что реально измеряется и обновляется ежедневно.',
+    'Не отчёты, а конкретные действия.',
+    'Каждый агент отвечает за свой срез сети.',
+    'Каждый новый агент = одна функция, которую раньше делал человек.',
+    'Утренний дайджест приходит сам, без единого клика.',
+    'Все точки на связи в реальном времени.',
+    'Не дашборд ради дашборда — управляемость сети.',
+    'Раньше — сводили сами. Теперь — считает машина.',
+    'Кинотеатры — лишь первое применение. Каркас один.',
+    'Вся сеть как на ладони — каждый день.'
+  ];
+
+  Reveal.initialize({
+    hash:true, controls:false, progress:false, slideNumber:false,
+    transition:'slide', transitionSpeed:'default', backgroundTransition:'fade',
+    width:1280, height:720, margin:0, minScale:.2, maxScale:2, center:true, keyboard:true, touch:true
+  });
+
+  const dotsEl=document.getElementById('dots');
+  LABELS.forEach((_,i)=>{ const d=document.createElement('span'); d.className='dot'; d.onclick=()=>Reveal.slide(i); dotsEl.appendChild(d); });
+  const dots=[...dotsEl.children];
+  const N=LABELS.length;
+  document.getElementById('totNum').textContent=String(N).padStart(2,'0');
+  document.querySelector('.fb-num').lastChild && (document.querySelector('.fb-num').innerHTML='<b id="fbNum">01</b> / '+String(N).padStart(2,'0'));
+  document.getElementById('prevBtn').onclick=()=>Reveal.prev();
+  document.getElementById('nextBtn').onclick=()=>Reveal.next();
+  function pad(n){return String(n+1).padStart(2,'0');}
+  function updateBar(i){
+    document.getElementById('curNum').textContent=pad(i);
+    document.getElementById('slLabel').textContent=LABELS[i]||'';
+    document.getElementById('tbSection').textContent=SECTIONS[i]||'';
+    document.getElementById('fbTag').textContent=TAGLINES[i]||'';
+    document.getElementById('fbNum').textContent=pad(i);
+    document.getElementById('bgnum').textContent=pad(i);
+    dots.forEach((d,k)=>d.classList.toggle('on',k===i));
+    document.getElementById('prevBtn').disabled = i===0;
+    const nb=document.getElementById('nextBtn');
+    if(i===N-1){ nb.innerHTML='В начало <i class="ph-bold ph-arrow-counter-clockwise"></i>'; nb.onclick=()=>Reveal.slide(0); }
+    else { nb.innerHTML='Далее <i class="ph-bold ph-arrow-right"></i>'; nb.onclick=()=>Reveal.next(); }
+  }
+
+  function fmt(v,dec){ let s=dec?(+v).toFixed(dec):Math.round(v).toString(); const p=s.split('.'); p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,' '); return p.join('.'); }
+  function runCount(el){
+    const t=parseFloat(el.dataset.count), dec=+(el.dataset.dec||0), pre=el.dataset.pre||'', suf=el.dataset.suf||'';
+    const o={v:0}; gsap.killTweensOf(o);
+    gsap.to(o,{v:t,duration:1.1,ease:'power2.out',onUpdate:()=>{el.textContent=pre+fmt(o.v,dec)+suf;},onComplete:()=>{el.textContent=pre+fmt(t,dec)+suf;}});
+  }
+  function drawPath(p,dur,delay){ const len=p.getTotalLength(); if(!len) return; p.style.strokeDasharray=len; p.style.strokeDashoffset=len; gsap.to(p.style,{strokeDashoffset:0,duration:dur,delay:delay||0,ease:'power2.out'}); }
+  function headsUp(s){ const els=s.querySelectorAll('.anim-up'); if(els.length) gsap.from(els,{opacity:0,y:18,duration:.55,stagger:.06,ease:'power2.out'}); }
+
+  // ---- builders ----
+  const SVGNS='http://www.w3.org/2000/svg';
+  function mEl(t,a){const e=document.createElementNS(SVGNS,t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+  function buildBars(){
+    const svg=document.getElementById('solBars'); if(!svg||svg.childNodes.length) return;
+    const H=[34,40,30,46,52,44,58,50,64,60,72,68,80,76];
+    const n=H.length, gap=4, w=(320-gap*(n-1))/n;
+    H.forEach((h,i)=>{ const x=i*(w+gap), y=92-h; svg.appendChild(mEl('rect',{x:x,y:y,width:w,height:h,rx:2,fill:i>=n-3?'#16C0D4':'rgba(22,192,212,.4)','data-h':h})); });
+  }
+  function buildMap(){
+    const E=document.getElementById('netEdges'),P=document.getElementById('netPins'); if(!E||E.childNodes.length) return;
+    const PINS=[{x:430,y:200,hq:1,label:'Центр'},{x:815,y:345,label:'Флагман',val:'88%',pos:1},{x:360,y:64,label:'Север'},{x:205,y:285,label:'Запад'},{x:110,y:240,label:'Парк'},{x:270,y:340},{x:560,y:320,label:'Окраина',val:'41%',neg:1},{x:650,y:92,label:'Восток'},{x:600,y:175},{x:905,y:380},{x:480,y:300},{x:565,y:120},{x:520,y:60},{x:300,y:44},{x:670,y:255},{x:470,y:248},{x:250,y:175},{x:345,y:150},{x:478,y:158,val:'94%',pos:1}];
+    const hub=PINS[0];
+    for(let i=1;i<PINS.length;i++){ const B=PINS[i]; E.appendChild(mEl('path',{d:'M'+B.x+' '+B.y+' L'+hub.x+' '+hub.y,class:'medge'})); }
+    PINS.forEach((pn,i)=>{
+      const g=mEl('g',{transform:'translate('+pn.x+' '+pn.y+')'}); const inner=mEl('g',{class:'mpin-inner'});
+      if(!pn.hq){ inner.appendChild(mEl('circle',{cx:0,cy:0,r:7,class:'mpulse',style:'animation-delay:'+(i*.13)+'s'})); inner.appendChild(mEl('circle',{cx:0,cy:0,r:4.5,class:'mdot'})); }
+      else { inner.appendChild(mEl('circle',{cx:0,cy:0,r:13,class:'mhubring'})); inner.appendChild(mEl('circle',{cx:0,cy:0,r:6,class:'mhub'})); }
+      g.appendChild(inner);
+      if(pn.hq){ const t=mEl('text',{x:0,y:30,class:'mlabel-hub','text-anchor':'middle'}); t.textContent='Командный центр сети'; g.appendChild(t); }
+      else if(pn.label){ const r=pn.x<860; const t=mEl('text',{x:r?11:-11,y:4,class:'mlabel','text-anchor':r?'start':'end'}); t.textContent=pn.label; g.appendChild(t); }
+      if(pn.val){ const r=pn.x<860; const t=mEl('text',{x:r?11:-11,y:pn.label?19:4,class:pn.neg?'mval-neg':'mval-pos','text-anchor':r?'start':'end'}); t.textContent=pn.val; g.appendChild(t); }
+      P.appendChild(g);
+    });
+  }
+  function buildArch(){ const c=document.getElementById('archTiles'); if(!c||c.childNodes.length) return;
+    for(let i=0;i<19;i++){ const d=document.createElement('div'); d.className='atile'+(i===0?' on':''); d.innerHTML='<span>'+(i+1)+'</span>'; c.appendChild(d); } }
+  buildBars(); buildMap(); buildArch();
+
+  const baRows=document.getElementById('baRows'), baToggle=document.getElementById('baToggle');
+  function setBA(state,animate){ if(!baRows) return;
+    baRows.classList.toggle('state-now',state==='now'); baRows.classList.toggle('state-was',state==='was');
+    if(baToggle){ baToggle.classList.toggle('now',state==='now'); baToggle.querySelectorAll('.ba-opt').forEach(o=>o.classList.toggle('on',o.dataset.s===state)); }
+    if(animate){ const sel=state==='now'?'.ba-now':'.ba-was'; gsap.from(baRows.querySelectorAll(sel),{opacity:0,y:10,duration:.4,stagger:.06,ease:'power2.out'}); } }
+  if(baToggle) baToggle.querySelectorAll('.ba-opt').forEach(o=>o.onclick=()=>setBA(o.dataset.s,true));
+
+  // ---- per-slide anim ----
+  const ANIM={
+    cover(s){ const tl=gsap.timeline();
+      tl.from(s.querySelector('.cv-eye'),{opacity:0,y:10,duration:.5,ease:'power2.out'})
+        .from(s.querySelectorAll('.cv-line'),{yPercent:115,duration:.7,stagger:.1,ease:'power3.out'},'-=.1')
+        .from(s.querySelector('.cv-sub'),{opacity:0,y:14,duration:.5},'-=.3')
+        .fromTo(s.querySelector('.cv-glow'),{scaleX:0},{scaleX:1,duration:.6,ease:'power2.out'},'-=.25')
+        .from(s.querySelector('.cv-trust'),{opacity:0,y:14,duration:.5},'-=.3'); },
+    scale(s){ headsUp(s); s.querySelectorAll('[data-count]').forEach(runCount); },
+    problem(s){ headsUp(s); },
+    idea(s){ headsUp(s);
+      const cn=[...s.querySelectorAll('.cn')], dn=[...s.querySelectorAll('.dn')];
+      gsap.from(s.querySelectorAll('.nd-s'),{opacity:0,x:-26,duration:.5,stagger:.08,ease:'power2.out'});
+      cn.forEach((p,i)=>drawPath(p,.7,.35+i*.09));
+      gsap.fromTo(s.querySelector('.nd-core'),{opacity:0,scale:.8},{opacity:1,scale:1,duration:.5,delay:.8,ease:'back.out(1.6)'});
+      gsap.fromTo(s.querySelector('.core-glow'),{opacity:.25,scale:.8},{opacity:.75,scale:1.05,duration:1.4,delay:.9,repeat:-1,yoyo:true,ease:'sine.inOut'});
+      dn.forEach((p,i)=>drawPath(p,.7,1.15+i*.09));
+      gsap.from(s.querySelectorAll('.nd-o'),{opacity:0,x:26,duration:.5,stagger:.1,delay:1.35,ease:'power2.out'}); },
+    solution(s){ headsUp(s); s.querySelectorAll('[data-count]').forEach(runCount);
+      s.querySelectorAll('#solBars rect').forEach((r,i)=>{ const h=+r.getAttribute('data-h'); gsap.fromTo(r,{attr:{height:0,y:92}},{attr:{height:h,y:92-h},duration:.6,delay:.2+i*.04,ease:'power2.out'}); });
+      const g=s.querySelector('#solGauge'); if(g){ const C=2*Math.PI*44; g.style.strokeDasharray=C; gsap.fromTo(g,{strokeDashoffset:C},{strokeDashoffset:C*(1-.71),duration:1.2,delay:.3,ease:'power2.out'}); } },
+    architecture(s){ headsUp(s); gsap.from(s.querySelectorAll('#archTiles .atile'),{scale:0,opacity:0,transformOrigin:'50% 50%',duration:.4,stagger:.035,delay:.3,ease:'back.out(1.7)'}); },
+    metrics(s){ headsUp(s); s.querySelectorAll('.mcl').forEach((p,i)=>drawPath(p,1.0,.2+i*.12)); },
+    agents1(s){ headsUp(s); },
+    agents2(s){ headsUp(s); },
+    vector(s){ headsUp(s); },
+    digest(s){ headsUp(s); },
+    map(s){ headsUp(s); s.querySelectorAll('[data-count]').forEach(runCount);
+      s.querySelectorAll('.medge').forEach((p,i)=>drawPath(p,.6,.2+i*.04));
+      gsap.from(s.querySelectorAll('.mpin-inner'),{scale:0,opacity:0,transformOrigin:'50% 50%',duration:.45,stagger:.05,delay:.3,ease:'back.out(1.8)'});
+      gsap.from(s.querySelectorAll('.mlabel,.mlabel-hub,.mval-pos,.mval-neg'),{opacity:0,duration:.5,stagger:.03,delay:.9}); },
+    value(s){ headsUp(s); },
+    shift(s){ headsUp(s); const f=s.querySelector('.ba-frag'); setBA(f&&f.classList.contains('visible')?'now':'was',false); },
+    universal(s){ headsUp(s); },
+    finale(s){ const tl=gsap.timeline();
+      tl.from(s.querySelector('.fl-eye'),{opacity:0,y:10,duration:.45,ease:'power2.out'})
+        .from(s.querySelectorAll('.fl-line'),{yPercent:118,duration:.7,stagger:.1,ease:'power3.out'},'-=.1')
+        .fromTo(s.querySelector('.fl-glow'),{scaleX:0},{scaleX:1,duration:.6,ease:'power2.out'},'-=.2')
+        .add(()=>s.querySelectorAll('[data-count]').forEach(runCount))
+        .from(s.querySelector('.fl-stats'),{opacity:0,y:14,duration:.5},'<')
+        .from(s.querySelector('.fl-fwd'),{opacity:0,y:12,duration:.45},'-=.2')
+        .from(s.querySelector('.fl-logo'),{opacity:0,y:12,duration:.45},'-=.2'); }
+  };
+  function runAnim(slide){ const k=slide&&slide.dataset.anim; if(k&&ANIM[k]) ANIM[k](slide); }
+
+  Reveal.on('ready',e=>{ updateBar(e.indexh); runAnim(e.currentSlide); });
+  Reveal.on('slidechanged',e=>{ updateBar(e.indexh); runAnim(e.currentSlide); });
+  Reveal.on('fragmentshown',e=>{ if(e.fragment&&e.fragment.classList.contains('ba-frag')) setBA('now',true); });
+  Reveal.on('fragmenthidden',e=>{ if(e.fragment&&e.fragment.classList.contains('ba-frag')) setBA('was',true); });
+})();
+</script>
+</body>
+</html>
