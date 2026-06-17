@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ru" class="h-full">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>МОНИТОР · AI-платформа управления сетью кинотеатров</title>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{
+ colors:{bg:'#0C1417',surf:'#121C20',elev:'#18242A',line:'#243036',ink:'#E8F1F3',t2:'#93A6AD',t3:'#5E727A',
+  ac:'#16C0D4',acd:'#0E97A8',act:'#0C2A30',pos:'#3BD18A',neg:'#F2655A',warn:'#E8A33D'},
+ fontFamily:{sans:['"IBM Plex Sans"','system-ui','sans-serif'],mono:['"IBM Plex Mono"','ui-monospace','monospace']},
+ borderRadius:{card:'14px',btn:'10px'}}}}
+</script>
+<style>
+ html{scroll-behavior:smooth}
+ body{-webkit-font-smoothing:antialiased;margin:0;background:#0C1417;color:#E8F1F3;font-family:'IBM Plex Sans',sans-serif}
+ .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"zero" 1}
+ .mono{font-family:'IBM Plex Mono',monospace}
+ .eyebrow{font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:600;color:#16C0D4}
+ .lbl{text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;font-weight:600}
+ /* grain */
+ .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+ .dotgrid{background-image:radial-gradient(circle,#1E2C33 1px,transparent 1px);background-size:26px 26px}
+ .glowline{background:linear-gradient(90deg,transparent,#16C0D4,transparent);height:1px}
+ .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1)}
+ .reveal.in{opacity:1;transform:none}
+ .logo{position:relative;width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#16C0D4,#0E97A8);display:grid;place-items:center}
+ a{color:inherit;text-decoration:none}
+ .btn-ac{background:#16C0D4;color:#06181B;transition:background .15s ease,transform .15s ease}
+ .btn-ac:hover{background:#3AD0E2;transform:translateY(-1px)}
+ .btn-gh{border:1px solid #2B3A41;color:#E8F1F3;transition:border-color .15s ease,background .15s ease}
+ .btn-gh:hover{border-color:#16C0D4;background:#0E1A1E}
+ ::selection{background:#16C0D4;color:#06181B}
+</style>
+</head>
+<body class="font-sans">
+<div class="grain"></div>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-40 border-b border-line/80 bg-bg/80 backdrop-blur">
+  <div class="max-w-[1180px] mx-auto px-5 lg:px-7 h-16 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2.5">
+      <span class="logo"><i class="ph-fill ph-play text-[#06181B] text-[16px] ml-0.5"></i></span>
+      <span class="leading-none"><span class="text-[16px] font-bold tracking-tight">МОНИТОР</span><span class="hidden sm:inline eyebrow ml-2 align-middle">AI</span></span>
+    </a>
+    <nav class="hidden lg:flex items-center gap-7 text-[13.5px] font-medium text-t2">
+      <a href="#agents" class="hover:text-ink transition-colors">Агенты</a>
+      <a href="#how" class="hover:text-ink transition-colors">Как работает</a>
+      <a href="#platform" class="hover:text-ink transition-colors">Платформа</a>
+      <a href="#digest" class="hover:text-ink transition-colors">Дайджест</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="dashboard.html" class="hidden sm:inline text-[13.5px] font-medium text-t2 hover:text-ink transition-colors">Демо</a>
+      <a href="#cta" class="btn-ac rounded-btn px-4 py-2 text-[13.5px] font-semibold">Запросить демо</a>
+    </div>
+  </div>
+</header>
+
+<main id="top" class="relative z-10">
+
+  <!-- HERO -->
+  <section class="dotgrid border-b border-line">
+    <div class="max-w-[1180px] mx-auto px-5 lg:px-7 pt-20 pb-24 grid lg:grid-cols-[1.05fr_.95fr] gap-14 items-center">
+      <div>
+        <div class="eyebrow mb-5">AI-платформа управления · сеть «Монитор»</div>
+        <h1 class="text-[clamp(40px,5.4vw,62px)] font-bold leading-[1.04] tracking-[-0.03em]">Вся сеть кинотеатров —<br>в одном AI-центре <span class="text-ac">управления</span>.</h1>
+        <p class="text-[16.5px] text-t2 leading-relaxed mt-6 max-w-[540px]">Платформа собирает данные со всех 19 кинотеатров, анализирует их в реальном времени и пятью AI-агентами выдаёт собственнику готовые управленческие решения — а не сырые отчёты.</p>
+        <div class="flex flex-wrap items-center gap-3 mt-8">
+          <a href="#cta" class="btn-ac rounded-btn px-5 py-3 text-[14px] font-semibold">Запросить демо</a>
+          <a href="dashboard.html" class="btn-gh rounded-btn px-5 py-3 text-[14px] font-semibold inline-flex items-center gap-2">Смотреть платформу <i class="ph-bold ph-arrow-right text-[14px]"></i></a>
+        </div>
+        <div class="flex items-center gap-6 mt-10 text-t3">
+          <div><div class="text-[22px] font-bold num text-ink">19</div><div class="lbl mt-0.5">кинотеатров</div></div>
+          <div class="w-px h-9 bg-line"></div>
+          <div><div class="text-[22px] font-bold num text-ink">5</div><div class="lbl mt-0.5">AI-агентов</div></div>
+          <div class="w-px h-9 bg-line"></div>
+          <div><div class="text-[22px] font-bold num text-ink">08:00</div><div class="lbl mt-0.5">дайджест собственнику</div></div>
+        </div>
+      </div>
+
+      <!-- hero product preview -->
+      <div class="relative">
+        <div class="absolute -inset-4 bg-ac/5 blur-2xl rounded-full"></div>
+        <div class="relative bg-surf border border-line rounded-card overflow-hidden shadow-2xl">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-line">
+            <div class="flex items-center gap-2 text-[12px] font-semibold"><span class="logo !w-5 !h-5 !rounded-[6px]"><i class="ph-fill ph-play text-[#06181B] text-[10px] ml-px"></i></span> Командный центр</div>
+            <div class="flex items-center gap-1.5 text-[10.5px] mono text-t3"><span class="w-1.5 h-1.5 rounded-full bg-pos"></span> 19 онлайн</div>
+          </div>
+          <div class="p-4">
+            <div class="grid grid-cols-3 gap-2.5">
+              <div class="bg-elev rounded-[10px] p-3"><div class="lbl text-t3">Выручка</div><div class="text-[16px] font-bold num mt-1">₽4.82М</div><div class="text-[10.5px] font-semibold num text-pos mt-0.5">▲ 8.4%</div></div>
+              <div class="bg-elev rounded-[10px] p-3"><div class="lbl text-t3">Гости</div><div class="text-[16px] font-bold num mt-1">14 280</div><div class="text-[10.5px] font-semibold num text-pos mt-0.5">▲ 6.2%</div></div>
+              <div class="bg-elev rounded-[10px] p-3"><div class="lbl text-t3">EBITDA</div><div class="text-[16px] font-bold num mt-1">26.3%</div><div class="text-[10.5px] font-semibold num text-ac mt-0.5">маржа</div></div>
+            </div>
+            <div class="bg-elev rounded-[10px] p-3 mt-2.5">
+              <div class="flex items-center justify-between"><div class="lbl text-t3">Выручка по сети · 30д</div><div class="text-[10.5px] mono text-ac">+12.1%</div></div>
+              <svg class="w-full h-[64px] mt-2" viewBox="0 0 320 64" preserveAspectRatio="none"><defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16C0D4" stop-opacity=".3"/><stop offset="1" stop-color="#16C0D4" stop-opacity="0"/></linearGradient></defs><path d="M0 48 C 30 44 50 50 80 38 C 110 28 130 34 160 24 C 190 16 210 22 240 14 C 270 8 300 12 320 6" fill="none" stroke="#16C0D4" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round"/><path d="M0 48 C 30 44 50 50 80 38 C 110 28 130 34 160 24 C 190 16 210 22 240 14 C 270 8 300 12 320 6 L 320 64 L 0 64 Z" fill="url(#hg)"/></svg>
+            </div>
+            <div class="bg-act/60 border border-ac/25 rounded-[10px] p-3 mt-2.5">
+              <div class="flex items-center gap-1.5 eyebrow !text-[9.5px] mb-1"><i class="ph-fill ph-sparkle"></i> Опер. директор</div>
+              <div class="text-[11.5px] leading-snug text-ink">Вечерние сеансы в «Монитор СБС» загружены на 94% — добавьте кассира на 18:00–22:00.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="border-b border-line">
+    <div class="max-w-[1180px] mx-auto px-5 lg:px-7 py-24 reveal">
+      <div class="grid lg:grid-cols-[1fr_1.1fr] gap-14 items-start">
+        <div>
+          <div class="eyebrow mb-4">Проблема</div>
+          <h2 class="text-[clamp(28px,3.4vw,40px)] font-bold leading-[1.1] tracking-[-0.02em]">Данные сети живут в четырёх системах. Решения принимаются вслепую.</h2>
+        </div>
+        <div class="space-y-5 pt-2">
+          <p class="text-[16px] text-t2 leading-relaxed">Касса, CRM, бар и склад каждого из 19 кинотеатров считают по-своему. Чтобы понять, что происходит в сети сегодня, собственник ждёт отчёты, сводит таблицы и теряет дни — а решения уже опоздали.</p>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="border border-line rounded-card p-4"><i class="ph-duotone ph-files text-warn text-[20px]"></i><div class="text-[13.5px] font-semibold mt-2">Разрозненные данные</div><div class="text-[12px] text-t2 mt-1 leading-snug">4 системы × 19 точек = ручное сведе&shy;ние</div></div>
+            <div class="border border-line rounded-card p-4"><i class="ph-duotone ph-clock-countdown text-warn text-[20px]"></i><div class="text-[13.5px] font-semibold mt-2">Решения с задержкой</div><div class="text-[12px] text-t2 mt-1 leading-snug">отчёт приходит, когда смена уже прошла</div></div>
+            <div class="border border-line rounded-card p-4"><i class="ph-duotone ph-eye-slash text-warn text-[20px]"></i><div class="text-[13.5px] font-semibold mt-2">Нет единой картины</div><div class="text-[12px] text-t2 mt-1 leading-snug">кто лидер, кто проседает — неочевидно</div></div>
+            <div class="border border-line rounded-card p-4"><i class="ph-duotone ph-chart-line-down text-warn text-[20px]"></i><div class="text-[13.5px] font-semibold mt-2">Упущенная выручка</div><div class="text-[12px] text-t2 mt-1 leading-snug">сетки сеансов и бар не оптимизированы</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGENTS (bento) -->
+  <section id="agents" class="border-b border-line">
+    <div class="max-w-[1180px] mx-auto px-5 lg:px-7 py-24">
+      <div class="max-w-[640px] reveal"><div class="eyebrow mb-4">Пять AI-агентов</div><h2 class="text-[clamp(28px,3.4vw,40px)] font-bold leading-[1.1] tracking-[-0.02em]">Команда из пяти директоров, которая не спит.</h2><p class="text-[16px] text-t2 leading-relaxed mt-4">Каждый агент анализирует свой срез данных по всей сети и выдаёт не цифры, а конкретное действие.</p></div>
+
+      <div class="grid grid-cols-1 md:grid-cols-6 gap-3 mt-12">
+        <!-- featured: ops -->
+        <div class="md:col-span-3 md:row-span-2 bg-surf border border-line rounded-card p-6 flex flex-col reveal">
+          <div class="flex items-center justify-between"><span class="w-11 h-11 rounded-[12px] bg-act text-ac grid place-items-center"><i class="ph-bold ph-gauge text-[22px]"></i></span><span class="lbl text-t3">Агент 01</span></div>
+          <div class="text-[19px] font-bold mt-4">Операционный директор</div>
+          <p class="text-[13.5px] text-t2 leading-relaxed mt-2 flex-1">В реальном времени отслеживает загрузку залов и нагрузку сети, оптимизирует распределение персонала и задач.</p>
+          <div class="flex flex-wrap gap-1.5 mt-4">
+            <span class="mono text-[10.5px] text-t2 border border-line rounded-full px-2.5 py-1">посещаемость</span>
+            <span class="mono text-[10.5px] text-t2 border border-line rounded-full px-2.5 py-1">загрузка залов</span>
+            <span class="mono text-[10.5px] text-t2 border border-line rounded-full px-2.5 py-1">ср. чек</span>
+            <span class="mono text-[10.5px] text-t2 border border-line rounded-full px-2.5 py-1">конверсия</span>
+          </div>
+          <div class="mt-5 pt-4 border-t border-line"><div class="flex items-center gap-1.5 eyebrow !text-[9.5px] mb-1.5"><i class="ph-fill ph-sparkle"></i> Пример решения</div><div class="text-[13px] leading-snug">«Монитор СБС»: вечерняя загрузка 94% — добавить кассира на 18:00–22:00 и кикнуть нагрузку с «Сити».</div></div>
+        </div>
+        <!-- booker -->
+        <div class="md:col-span-3 bg-surf border border-line rounded-card p-6 reveal">
+          <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-[11px] bg-act text-ac grid place-items-center"><i class="ph-bold ph-ticket text-[19px]"></i></span><div><div class="text-[16px] font-bold leading-tight">Букер</div><div class="lbl text-t3 mt-0.5">Агент 02</div></div></div>
+          <p class="text-[13px] text-t2 leading-relaxed mt-3">Анализирует фильмы, сборы, время показа и заполняемость — рекомендует сетки сеансов под реальный спрос зрителей.</p>
+          <div class="mono text-[11px] text-ac mt-3 leading-snug">→ перенести утренний сеанс в «Сити» на 11:30 · спрос +18%</div>
+        </div>
+        <!-- marketer -->
+        <div class="md:col-span-2 bg-surf border border-line rounded-card p-6 reveal">
+          <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-[11px] bg-act text-ac grid place-items-center"><i class="ph-bold ph-megaphone text-[18px]"></i></span><div><div class="text-[16px] font-bold leading-tight">Маркетолог</div><div class="lbl text-t3 mt-0.5">Агент 03</div></div></div>
+          <p class="text-[13px] text-t2 leading-relaxed mt-3">CRM, RFM, возвратность. Сам запускает email / SMS / Telegram / push.</p>
+        </div>
+        <!-- finance -->
+        <div class="md:col-span-2 bg-surf border border-line rounded-card p-6 reveal">
+          <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-[11px] bg-act text-ac grid place-items-center"><i class="ph-bold ph-chart-pie-slice text-[18px]"></i></span><div><div class="text-[16px] font-bold leading-tight">Фин. директор</div><div class="lbl text-t3 mt-0.5">Агент 04</div></div></div>
+          <p class="text-[13px] text-t2 leading-relaxed mt-3">Прибыль, расходы, отклонения. Формирует P&amp;L и прогноз месяца / квартала.</p>
+        </div>
+        <!-- legal -->
+        <div class="md:col-span-2 bg-surf border border-line rounded-card p-6 reveal">
+          <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-[11px] bg-act text-ac grid place-items-center"><i class="ph-bold ph-scales text-[18px]"></i></span><div><div class="text-[16px] font-bold leading-tight">Юрист</div><div class="lbl text-t3 mt-0.5">Агент 05</div></div></div>
+          <p class="text-[13px] text-t2 leading-relaxed mt-3">Аренда, контракты, соглашения. Подсвечивает риски и замечания.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS (flow, not 1-2-3) -->
+  <section id="how" class="border-b border-line dotgrid">
+    <div class="max-w-[1180px] mx-auto px-5 lg:px-7 py-24">
+      <div class="max-w-[640px] reveal"><div class="eyebrow mb-4">Как это работает</div><h2 class="text-[clamp(28px,3.4vw,40px)] font-bold leading-[1.1] tracking-[-0.02em]">От сырых данных — к готовому решению.</h2></div>
+      <div class="grid lg:grid-cols-[1fr_auto_1fr_auto_1fr] gap-5 lg:gap-3 items-stretch mt-12 reveal">
+        <div class="bg-surf border border-line rounded-card p-6">
+          <div class="lbl text-t3">Источники</div>
+          <div class="space-y-2.5 mt-4">
+            <div class="flex items-center gap-2.5 text-[13.5px] font-medium"><i class="ph-duotone ph-cash-register text-ac text-[18px]"></i> Касса <span class="mono text-[10.5px] text-t3 ml-auto">билеты · возвраты</span></div>
+            <div class="flex items-center gap-2.5 text-[13.5px] font-medium"><i class="ph-duotone ph-users-three text-ac text-[18px]"></i> CRM <span class="mono text-[10.5px] text-t3 ml-auto">база · сегменты</span></div>
+            <div class="flex items-center gap-2.5 text-[13.5px] font-medium"><i class="ph-duotone ph-coffee text-ac text-[18px]"></i> Бар <span class="mono text-[10.5px] text-t3 ml-auto">чек · позиции</span></div>
+            <div class="flex items-center gap-2.5 text-[13.5px] font-medium"><i class="ph-duotone ph-package text-ac text-[18px]"></i> Склад <span class="mono text-[10.5px] text-t3 ml-auto">остатки · списания</span></div>
+          </div>
+        </div>
+        <div class="hidden lg:flex items-center justify-center text-ac"><i class="ph-bold ph-arrow-right text-[22px]"></i></div>
+        <div class="bg-surf border border-ac/30 rounded-card p-6 relative overflow-hidden">
+          <div class="absolute -top-8 -right-8 w-28 h-28 bg-ac/10 blur-2xl rounded-full"></div>
+          <div class="lbl text-ac">AI-агенты</div>
+          <div class="text-[15px] font-bold mt-4 leading-snug">Анализируют срез данных по всей сети в реальном времени</div>
+          <p class="text-[12.5px] text-t2 leading-relaxed mt-3">Каждый агент на Claude обрабатывает свою зону: загрузка, репертуар, клиенты, финансы, договоры — и формулирует действие.</p>
+          <div class="flex -space-x-1.5 mt-4">
+            <span class="w-7 h-7 rounded-full bg-elev border border-line grid place-items-center text-ac"><i class="ph ph-gauge text-[13px]"></i></span>
+            <span class="w-7 h-7 rounded-full bg-elev border border-line grid place-items-center text-ac"><i class="ph ph-ticket text-[13px]"></i></span>
+            <span class="w-7 h-7 rounded-full bg-elev border border-line grid place-items-center text-ac"><i class="ph ph-megaphone text-[13px]"></i></span>
+            <span class="w-7 h-7 rounded-full bg-elev border border-line grid place-items-center text-ac"><i class="ph ph-chart-pie-slice text-[13px]"></i></span>
+            <span class="w-7 h-7 rounded-full bg-elev border border-line grid place-items-center text-ac"><i class="ph ph-scales text-[13px]"></i></span>
+          </div>
+        </div>
+        <div class="hidden lg:flex items-center justify-center text-ac"><i class="ph-bold ph-arrow-right text-[22px]"></i></div>
+        <div class="bg-surf border border-line rounded-card p-6">
+          <div class="lbl text-t3">Решения</div>
+          <div class="space-y-2.5 mt-4">
+            <div class="flex items-center gap-2.5 text-[13.5px] font-medium"><i class="ph-duotone ph-squares-four text-pos text-[18px]"></i> Живой дашборд</div>
+            <div class="flex items-center gap-2.5 text-[13.5px] font-medium"><i class="ph-duotone ph-lightbulb text-pos text-[18px]"></i> Готовые рекомендации</div>
+            <div class="flex items-center gap-2.5 text-[13.5px] font-medium"><i class="ph-duotone ph-sun-horizon text-pos text-[18px]"></i> Утренний дайджест</div>
+            <div class="flex items-center gap-2.5 text-[13.5px] font-medium"><i class="ph-duotone ph-bell-ringing text-pos text-[18px]"></i> Алерты при отклонениях</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATFORM preview -->
+  <section id="platform" class="border-b border-line">
+    <div class="max-w-[1180px] mx-auto px-5 lg:px-7 py-24">
+      <div class="flex flex-wrap items-end justify-between gap-4 reveal">
+        <div class="max-w-[600px]"><div class="eyebrow mb-4">Платформа</div><h2 class="text-[clamp(28px,3.4vw,40px)] font-bold leading-[1.1] tracking-[-0.02em]">Вся сеть на одном экране.</h2><p class="text-[16px] text-t2 leading-relaxed mt-4">Выручка, посетители, средний билет, чек бара, EBITDA, план/факт и рейтинг всех 19 кинотеатров — в реальном времени.</p></div>
+        <a href="dashboard.html" class="btn-ac rounded-btn px-5 py-3 text-[14px] font-semibold inline-flex items-center gap-2 shrink-0">Открыть демо <i class="ph-bold ph-arrow-up-right text-[14px]"></i></a>
+      </div>
+      <a href="dashboard.html" class="block mt-10 reveal group">
+        <div class="bg-surf border border-line rounded-card p-3 group-hover:border-ac/40 transition-colors">
+          <div class="rounded-[10px] overflow-hidden border border-line bg-bg">
+            <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-2 p-3 border-b border-line">
+              <div class="bg-elev rounded-[8px] p-2.5"><div class="lbl text-t3">Выручка день</div><div class="text-[15px] font-bold num mt-0.5">₽4.82М</div></div>
+              <div class="bg-elev rounded-[8px] p-2.5"><div class="lbl text-t3">Выручка мес.</div><div class="text-[15px] font-bold num mt-0.5">₽118.6М</div></div>
+              <div class="bg-elev rounded-[8px] p-2.5"><div class="lbl text-t3">Гости</div><div class="text-[15px] font-bold num mt-0.5">14 280</div></div>
+              <div class="bg-elev rounded-[8px] p-2.5"><div class="lbl text-t3">Ср. билет</div><div class="text-[15px] font-bold num mt-0.5">₽338</div></div>
+              <div class="bg-elev rounded-[8px] p-2.5"><div class="lbl text-t3">Чек бара</div><div class="text-[15px] font-bold num mt-0.5">₽427</div></div>
+              <div class="bg-elev rounded-[8px] p-2.5"><div class="lbl text-t3">EBITDA</div><div class="text-[15px] font-bold num mt-0.5 text-ac">26.3%</div></div>
+              <div class="bg-elev rounded-[8px] p-2.5"><div class="lbl text-t3">План/факт</div><div class="text-[15px] font-bold num mt-0.5">92%</div></div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-3 p-3">
+              <div class="md:col-span-2 bg-elev rounded-[8px] p-3"><div class="lbl text-t3 mb-2">Выручка по сети · 30 дней</div><svg class="w-full h-[120px]" viewBox="0 0 600 120" preserveAspectRatio="none"><defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16C0D4" stop-opacity=".26"/><stop offset="1" stop-color="#16C0D4" stop-opacity="0"/></linearGradient></defs><path d="M0 92 C 40 86 60 96 100 74 C 140 56 170 64 210 46 C 250 30 290 40 330 28 C 380 14 430 22 470 14 C 520 6 560 12 600 8" fill="none" stroke="#16C0D4" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linecap="round"/><path d="M0 92 C 40 86 60 96 100 74 C 140 56 170 64 210 46 C 250 30 290 40 330 28 C 380 14 430 22 470 14 C 520 6 560 12 600 8 L 600 120 L 0 120 Z" fill="url(#pg)"/></svg></div>
+              <div class="bg-elev rounded-[8px] p-3"><div class="lbl text-t3 mb-2">Рейтинг сети</div>
+                <div class="space-y-2">
+                  <div class="flex items-center gap-2 text-[12px]"><span class="mono font-bold text-ac w-4">1</span><span class="flex-1 truncate font-medium">Монитор СБС</span><span class="num font-semibold text-pos">+14%</span></div>
+                  <div class="flex items-center gap-2 text-[12px]"><span class="mono font-bold text-t3 w-4">2</span><span class="flex-1 truncate font-medium">Кр. Площадь</span><span class="num font-semibold text-pos">+9%</span></div>
+                  <div class="flex items-center gap-2 text-[12px]"><span class="mono font-bold text-t3 w-4">3</span><span class="flex-1 truncate font-medium">Монитор Сити</span><span class="num font-semibold text-pos">+6%</span></div>
+                  <div class="flex items-center gap-2 text-[12px]"><span class="mono font-bold text-neg w-4">19</span><span class="flex-1 truncate font-medium text-t2">Туапсе</span><span class="num font-semibold text-neg">−8%</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- DIGEST -->
+  <section id="digest" class="border-b border-line">
+    <div class="max-w-[1180px] mx-auto px-5 lg:px-7 py-24 grid lg:grid-cols-[1.1fr_.9fr] gap-14 items-center">
+      <div class="reveal">
+        <div class="eyebrow mb-4">Автоматизация · 08:00 каждый день</div>
+        <h2 class="text-[clamp(28px,3.4vw,40px)] font-bold leading-[1.1] tracking-[-0.02em]">Утренний дайджест собственнику — без единого клика.</h2>
+        <p class="text-[16px] text-t2 leading-relaxed mt-5">Каждое утро система присылает свод за вчера: выручка, лидеры и аутсайдеры сети, рекомендации всех агентов. В Telegram — текстом и голосом, плюс PDF с KPI, графиками и прогнозами.</p>
+        <div class="flex flex-wrap gap-2.5 mt-7">
+          <span class="flex items-center gap-2 text-[13px] font-medium border border-line rounded-full px-3.5 py-1.5"><i class="ph-fill ph-telegram-logo text-ac text-[15px]"></i> Telegram</span>
+          <span class="flex items-center gap-2 text-[13px] font-medium border border-line rounded-full px-3.5 py-1.5"><i class="ph-bold ph-file-pdf text-ac text-[15px]"></i> PDF-отчёт</span>
+          <span class="flex items-center gap-2 text-[13px] font-medium border border-line rounded-full px-3.5 py-1.5"><i class="ph-bold ph-waveform text-ac text-[15px]"></i> Голосовое</span>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="bg-surf border border-line rounded-card p-5 max-w-[400px] ml-auto">
+          <div class="flex items-center gap-2.5 pb-3 border-b border-line"><span class="logo !w-8 !h-8"><i class="ph-fill ph-play text-[#06181B] text-[13px] ml-0.5"></i></span><div><div class="text-[13px] font-semibold">МОНИТОР · Дайджест</div><div class="mono text-[10.5px] text-t3">сегодня, 08:00</div></div></div>
+          <div class="text-[13px] leading-relaxed mt-3 space-y-2.5">
+            <div>☀️ <b>Доброе утро, Алексей.</b> Сводка по сети за вчера:</div>
+            <div class="bg-elev rounded-[10px] p-3 num"><div class="flex justify-between"><span class="text-t2">Выручка сети</span><b>₽4.61М</b></div><div class="flex justify-between mt-1"><span class="text-t2">Гости</span><b>13 640</b></div><div class="flex justify-between mt-1"><span class="text-t2">Загрузка</span><b class="text-ac">71%</b></div></div>
+            <div>🏆 Лидер: <b>Монитор СБС</b> (+14%) · 📉 Аутсайдер: <b>Туапсе</b> (−8%)</div>
+            <div class="bg-act/40 border border-ac/25 rounded-[10px] p-3"><span class="text-ac font-semibold">2 рекомендации агентов:</span> усилить вечер в СБС, перенести утро в Сити.</div>
+            <div class="flex items-center gap-2 text-ac mono text-[11.5px] pt-1"><i class="ph-fill ph-play-circle text-[18px]"></i> Голосовая сводка · 0:48</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta" class="border-b border-line dotgrid">
+    <div class="max-w-[820px] mx-auto px-5 lg:px-7 py-28 text-center reveal">
+      <div class="glowline w-24 mx-auto mb-8"></div>
+      <h2 class="text-[clamp(30px,4vw,48px)] font-bold leading-[1.08] tracking-[-0.03em]">Готовы увидеть сеть<br>глазами AI?</h2>
+      <p class="text-[16.5px] text-t2 leading-relaxed mt-5 max-w-[520px] mx-auto">Покажем платформу на данных вашей сети за 30 минут. Без обязательств и установки.</p>
+      <div class="flex flex-wrap items-center justify-center gap-3 mt-9">
+        <a href="#cta" class="btn-ac rounded-btn px-6 py-3.5 text-[15px] font-semibold">Запросить демо</a>
+        <a href="dashboard.html" class="btn-gh rounded-btn px-6 py-3.5 text-[15px] font-semibold">Посмотреть платформу</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="max-w-[1180px] mx-auto px-5 lg:px-7 py-12 flex flex-col sm:flex-row items-center justify-between gap-4 text-t3">
+    <div class="flex items-center gap-2.5"><span class="logo !w-7 !h-7"><i class="ph-fill ph-play text-[#06181B] text-[12px] ml-0.5"></i></span><span class="text-[13px] font-semibold text-t2">МОНИТОР · AI-платформа</span></div>
+    <div class="mono text-[11.5px]">Демо-версия · данные синтетические</div>
+  </footer>
+</main>
+
+<script>
+(function(){
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
