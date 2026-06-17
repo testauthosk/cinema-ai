@@ -113,6 +113,16 @@ tailwind.config={theme:{extend:{
  .mval-neg{fill:#DC2626;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600}
  .atile{width:30px;height:36px;border:1px solid #DCE6E9;border-radius:7px;background:#fff;display:grid;place-items:center;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:#8498A0;box-shadow:0 1px 2px rgba(14,26,30,.04)}
  .atile.on{border-color:#16C0D4;background:#E4F5F7;color:#0B7C8B;box-shadow:0 6px 16px -8px rgba(22,192,212,.6)}
+ .ba-toggle{position:relative;display:inline-flex;background:#EEF4F5;border:1px solid #DCE6E9;border-radius:999px;padding:4px;cursor:pointer;user-select:none}
+ .ba-opt{position:relative;z-index:1;min-width:80px;text-align:center;padding:6px 18px;font-size:13.5px;font-weight:600;color:#52656C;border-radius:999px;transition:color .2s}
+ .ba-opt.on{color:#06181B}
+ .ba-knob{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);background:#16C0D4;border-radius:999px;transition:transform .3s cubic-bezier(.16,1,.3,1);box-shadow:0 6px 16px -8px rgba(22,192,212,.8)}
+ .ba-toggle.now .ba-knob{transform:translateX(100%)}
+ .ba-cell{background:#fff;border:1px solid #DCE6E9;border-radius:14px;padding:18px 20px;box-shadow:0 1px 2px rgba(14,26,30,.04),0 12px 30px -18px rgba(14,26,30,.12)}
+ .ba-was{color:#8498A0}
+ .ba-now{color:#0E1A1E;font-weight:600}
+ .state-was .ba-now{display:none}
+ .state-now .ba-was{display:none}
 </style>
 </head>
 <body>
@@ -507,6 +517,38 @@ tailwind.config={theme:{extend:{
     </div>
   </section>
 
+  <!-- 12b · SHIFT (было → стало) -->
+  <section data-anim="shift">
+    <div class="eyebrow anim-up">Главное · трансформация</div>
+    <h2 class="text-[42px] mt-3 anim-up">Раньше сводили сами. Теперь считает <span class="text-acd">машина</span>.</h2>
+    <div class="flex items-center gap-3 mt-6 anim-up">
+      <div class="ba-toggle now" id="baToggle">
+        <span class="ba-opt" data-s="was">Было</span>
+        <span class="ba-opt on" data-s="now">Стало</span>
+        <span class="ba-knob"></span>
+      </div>
+      <span class="text-[12.5px] text-t3 mono">нажмите, чтобы сравнить ↔</span>
+    </div>
+    <div id="baRows" class="state-now grid grid-cols-2 gap-x-9 gap-y-4 mt-8 max-w-[1040px]">
+      <div class="ba-cell">
+        <div class="flex items-center gap-2.5 text-t2"><span class="w-8 h-8 rounded-[9px] bg-elev grid place-items-center text-acd"><i class="ph-bold ph-files text-[17px]"></i></span><span class="lbl">Сбор данных</span></div>
+        <div class="text-[16px] mt-2.5 leading-snug"><span class="ba-was">вручную из 4 систем, выгрузки в Excel</span><span class="ba-now"><i class="ph-bold ph-check text-acd text-[14px] mr-1 align-middle"></i>автоматически, в реальном времени</span></div>
+      </div>
+      <div class="ba-cell">
+        <div class="flex items-center gap-2.5 text-t2"><span class="w-8 h-8 rounded-[9px] bg-elev grid place-items-center text-acd"><i class="ph-bold ph-clock-countdown text-[17px]"></i></span><span class="lbl">Скорость решения</span></div>
+        <div class="text-[16px] mt-2.5 leading-snug"><span class="ba-was">отчёт задним числом — через дни</span><span class="ba-now"><i class="ph-bold ph-check text-acd text-[14px] mr-1 align-middle"></i>в течение смены — за секунды</span></div>
+      </div>
+      <div class="ba-cell">
+        <div class="flex items-center gap-2.5 text-t2"><span class="w-8 h-8 rounded-[9px] bg-elev grid place-items-center text-acd"><i class="ph-bold ph-squares-four text-[17px]"></i></span><span class="lbl">Картина сети</span></div>
+        <div class="text-[16px] mt-2.5 leading-snug"><span class="ba-was">19 точек в разрозненных таблицах</span><span class="ba-now"><i class="ph-bold ph-check text-acd text-[14px] mr-1 align-middle"></i>вся сеть на одном экране</span></div>
+      </div>
+      <div class="ba-cell">
+        <div class="flex items-center gap-2.5 text-t2"><span class="w-8 h-8 rounded-[9px] bg-elev grid place-items-center text-acd"><i class="ph-bold ph-user-gear text-[17px]"></i></span><span class="lbl">Кто это делает</span></div>
+        <div class="text-[16px] mt-2.5 leading-snug"><span class="ba-was">люди вручную, по ночам и выходным</span><span class="ba-now"><i class="ph-bold ph-check text-acd text-[14px] mr-1 align-middle"></i>5 AI-агентов, 24/7/365</span></div>
+      </div>
+    </div>
+  </section>
+
   <!-- 13 · FINALE -->
   <section data-anim="finale" style="text-align:center">
     <div class="eyebrow fl-eye">Монитор · итог</div>
@@ -552,8 +594,8 @@ tailwind.config={theme:{extend:{
 
 <script>
 (function(){
-  const LABELS=['Обложка','Контекст','Проблема','Идея','Решение','Архитектура','Метрики','Агент 01','Агенты 02–05','Вектор','Дайджест','Карта сети','Ценность','Финал'];
-  const SECTIONS=['Обложка','Контекст','Проблема','Идея','Решение','Архитектура','Метрики','Агенты','Агенты','Вектор','Автоматизация','Сеть','Итог','Финал'];
+  const LABELS=['Обложка','Контекст','Проблема','Идея','Решение','Архитектура','Метрики','Агент 01','Агенты 02–05','Вектор','Дайджест','Карта сети','Ценность','Было → Стало','Финал'];
+  const SECTIONS=['Обложка','Контекст','Проблема','Идея','Решение','Архитектура','Метрики','Агенты','Агенты','Вектор','Автоматизация','Сеть','Итог','Трансформация','Финал'];
   const TAGLINES=[
     'Все 19 кинотеатров — в одном центре управления.',
     'Большая сеть, четыре системы, ноль единой картины.',
@@ -568,6 +610,7 @@ tailwind.config={theme:{extend:{
     'Утренний дайджест приходит сам, без единого клика.',
     'Все точки на связи в реальном времени.',
     'Не дашборд ради дашборда — управляемость сети.',
+    'Раньше — сводили сами. Теперь — считает машина.',
     'Вся сеть как на ладони — каждый день.'
   ];
 
@@ -638,6 +681,13 @@ tailwind.config={theme:{extend:{
     for(let i=0;i<19;i++){ const d=document.createElement('div'); d.className='atile'+(i===0?' on':''); d.innerHTML='<span>'+(i+1)+'</span>'; c.appendChild(d); } }
   buildBars(); buildMap(); buildArch();
 
+  const baRows=document.getElementById('baRows'), baToggle=document.getElementById('baToggle');
+  function setBA(state,animate){ if(!baRows) return;
+    baRows.classList.toggle('state-now',state==='now'); baRows.classList.toggle('state-was',state==='was');
+    if(baToggle){ baToggle.classList.toggle('now',state==='now'); baToggle.querySelectorAll('.ba-opt').forEach(o=>o.classList.toggle('on',o.dataset.s===state)); }
+    if(animate){ const sel=state==='now'?'.ba-now':'.ba-was'; gsap.from(baRows.querySelectorAll(sel),{opacity:0,y:10,duration:.4,stagger:.06,ease:'power2.out'}); } }
+  if(baToggle) baToggle.querySelectorAll('.ba-opt').forEach(o=>o.onclick=()=>setBA(o.dataset.s,true));
+
   // ---- per-slide anim ----
   const ANIM={
     cover(s){ const tl=gsap.timeline();
@@ -670,6 +720,7 @@ tailwind.config={theme:{extend:{
       gsap.from(s.querySelectorAll('.mpin-inner'),{scale:0,opacity:0,transformOrigin:'50% 50%',duration:.45,stagger:.05,delay:.3,ease:'back.out(1.8)'});
       gsap.from(s.querySelectorAll('.mlabel,.mlabel-hub,.mval-pos,.mval-neg'),{opacity:0,duration:.5,stagger:.03,delay:.9}); },
     value(s){ headsUp(s); },
+    shift(s){ headsUp(s); setBA('was',false); gsap.delayedCall(.9,()=>setBA('now',true)); },
     finale(s){ const tl=gsap.timeline();
       tl.from(s.querySelector('.fl-eye'),{opacity:0,y:10,duration:.45,ease:'power2.out'})
         .from(s.querySelectorAll('.fl-line'),{yPercent:118,duration:.7,stagger:.1,ease:'power3.out'},'-=.1')
